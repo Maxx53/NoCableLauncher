@@ -1,0 +1,1 @@
+start NoCableLauncher.exe -set
