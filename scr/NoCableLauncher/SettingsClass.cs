@@ -40,7 +40,7 @@ namespace NoCableLauncher
             [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
             [global::System.Configuration.UserScopedSettingAttribute()]
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.Configuration.DefaultSettingValueAttribute("012B7E0C")]
+            [global::System.Configuration.DefaultSettingValueAttribute("012C96EC")]
             public string offcetVID
             {
                 get
@@ -56,7 +56,7 @@ namespace NoCableLauncher
             [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
             [global::System.Configuration.UserScopedSettingAttribute()]
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.Configuration.DefaultSettingValueAttribute("012B7E14")]
+            [global::System.Configuration.DefaultSettingValueAttribute("012C96F4")]
             public string offcetPID
             {
                 get
