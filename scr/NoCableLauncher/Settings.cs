@@ -95,7 +95,7 @@ namespace NoCableLauncher
             else
             {
                 p1DeviceCombo.SelectedIndex = GetDeviceIndex(Program.settings.GUID1);
-                p1DeviceCombo_SelectedIndexChanged(null, e);
+                p1DeviceCombo_SelectionChangeCommitted(null, null);
                 p1manualCheckBox_CheckedChanged(null, e);
             }
 
@@ -108,7 +108,7 @@ namespace NoCableLauncher
             else
             {
                 p2DeviceCombo.SelectedIndex = GetDeviceIndex(Program.settings.GUID2);
-                p2DeviceCombo_SelectedIndexChanged(null, e);
+                p2DeviceCombo_SelectionChangeCommitted(null, null);
                 p2manualCheckBox_CheckedChanged(null, e);
             }
 
@@ -139,23 +139,6 @@ namespace NoCableLauncher
             p2DeviceCombo.Enabled = !p2manualCheckBox.Checked;
         }
 
-        private void p1DeviceCombo_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (devices.Count != 0)
-            {
-                p1vidTextBox.Text = devices[p1DeviceCombo.SelectedIndex].Vid;
-                p1pidTexBox.Text = devices[p1DeviceCombo.SelectedIndex].Pid;
-            }
-        }
-
-        private void p2DeviceCombo_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (devices.Count != 0)
-            {
-                p2vidTextBox.Text = devices[p2DeviceCombo.SelectedIndex].Vid;
-                p2pidTexBox.Text = devices[p2DeviceCombo.SelectedIndex].Pid;
-            }
-        }
 
         private void DeviceIDcheck()
         {
@@ -243,7 +226,24 @@ namespace NoCableLauncher
 
         private void p1DeviceCombo_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            DeviceIDcheck();
+            if (devices.Count != 0)
+            {
+                p1vidTextBox.Text = devices[p1DeviceCombo.SelectedIndex].Vid;
+                p1pidTexBox.Text = devices[p1DeviceCombo.SelectedIndex].Pid;
+
+                DeviceIDcheck();
+            }
+        }
+
+        private void p2DeviceCombo_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (devices.Count != 0)
+            {
+                p2vidTextBox.Text = devices[p2DeviceCombo.SelectedIndex].Vid;
+                p2pidTexBox.Text = devices[p2DeviceCombo.SelectedIndex].Pid;
+
+                DeviceIDcheck();
+            }
         }
 
         private void p1DeviceCombo_DropDown(object sender, EventArgs e)

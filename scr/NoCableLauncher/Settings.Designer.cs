@@ -114,7 +114,6 @@
             this.p1DeviceCombo.Size = new System.Drawing.Size(264, 21);
             this.p1DeviceCombo.TabIndex = 5;
             this.p1DeviceCombo.DropDown += new System.EventHandler(this.p1DeviceCombo_DropDown);
-            this.p1DeviceCombo.SelectedIndexChanged += new System.EventHandler(this.p1DeviceCombo_SelectedIndexChanged);
             this.p1DeviceCombo.SelectionChangeCommitted += new System.EventHandler(this.p1DeviceCombo_SelectionChangeCommitted);
             // 
             // label2
@@ -173,7 +172,7 @@
             // 
             // okButton
             // 
-            this.okButton.Location = new System.Drawing.Point(206, 432);
+            this.okButton.Location = new System.Drawing.Point(206, 434);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(77, 24);
             this.okButton.TabIndex = 7;
@@ -183,7 +182,7 @@
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(289, 432);
+            this.cancelButton.Location = new System.Drawing.Point(289, 434);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(77, 24);
             this.cancelButton.TabIndex = 8;
@@ -334,7 +333,7 @@
             // 
             // inputDevButton
             // 
-            this.inputDevButton.Location = new System.Drawing.Point(12, 433);
+            this.inputDevButton.Location = new System.Drawing.Point(12, 435);
             this.inputDevButton.Name = "inputDevButton";
             this.inputDevButton.Size = new System.Drawing.Size(121, 23);
             this.inputDevButton.TabIndex = 6;
@@ -362,11 +361,11 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(205, 52);
+            this.label12.Location = new System.Drawing.Point(202, 53);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(140, 39);
             this.label12.TabIndex = 6;
-            this.label12.Text = "Note: to activate Player 2\r\nin-game, go to \"Multiplayer\" \r\nand press Ctrl+M";
+            this.label12.Text = "Note: to activate Player 2\r\nin game, go to \"Multiplayer\" \r\nand press Ctrl+M";
             // 
             // p2manualCheckBox
             // 
@@ -414,8 +413,7 @@
             this.p2DeviceCombo.Size = new System.Drawing.Size(265, 21);
             this.p2DeviceCombo.TabIndex = 5;
             this.p2DeviceCombo.DropDown += new System.EventHandler(this.p1DeviceCombo_DropDown);
-            this.p2DeviceCombo.SelectedIndexChanged += new System.EventHandler(this.p2DeviceCombo_SelectedIndexChanged);
-            this.p2DeviceCombo.SelectionChangeCommitted += new System.EventHandler(this.p1DeviceCombo_SelectionChangeCommitted);
+            this.p2DeviceCombo.SelectionChangeCommitted += new System.EventHandler(this.p2DeviceCombo_SelectionChangeCommitted);
             // 
             // p2pidTexBox
             // 
@@ -437,7 +435,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(378, 464);
+            this.ClientSize = new System.Drawing.Size(378, 466);
             this.Controls.Add(this.inputDevButton);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.player2GroupBox);
