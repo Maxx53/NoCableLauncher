@@ -5,12 +5,12 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Globalization;
 using System.IO;
+using NoCableLauncher.CoreAudioApi;
 
 namespace NoCableLauncher
 {
     class Program
     {
-
         [DllImport("kernel32.dll")]
         public static extern IntPtr OpenProcess(int dwDesiredAccess,
                bool bInheritHandle, int dwProcessId);
@@ -26,6 +26,25 @@ namespace NoCableLauncher
 
         public static SettingsClass.Settings settings = SettingsClass.Settings.Default;
 
+        private static int offcetVID = 0;
+        private static int offcetPID = 0;
+        private static byte[] vid = new byte[2];
+        private static byte[] pid = new byte[2];
+
+        private static int hotkeyID = 0;
+        private static bool hkPressed = false;
+
+        private static PolicyConfigClient pPolicyConfig = new PolicyConfigClient();
+
+        public static void SetDeviceState(string guid, bool enabled = false)
+        {
+            if (guid != string.Empty)
+            {
+                pPolicyConfig.SetEndpointVisibility(guid, enabled);
+            }
+            else
+                ExitWithError("Player2 Input device is not set!");
+        }
 
         public static int FromHex(string value)
         {
@@ -56,90 +75,155 @@ namespace NoCableLauncher
             Environment.Exit(0);
         }
 
+        private static void GetDeviceValues(bool multiplayer)
+        {
+            try
+            {
+                //Getting device VID & PID
+                if (!multiplayer)
+                {
+                    vid = GetDevId(settings.VID);
+                    pid = GetDevId(settings.PID);
+                }
+                else
+                {
+                    vid = GetDevId(settings.VID2);
+                    pid = GetDevId(settings.PID2);
+                }
+
+            }
+            catch (Exception exc)
+            {
+                ExitWithError(exc.Message);
+            }
+        }
+
+        private static void GetOffcetValues()
+        {
+            try
+            {
+                //Getting RAM offcets
+                offcetVID = FromHex(settings.offcetVID);
+                offcetPID = FromHex(settings.offcetPID);
+            }
+            catch (Exception exc)
+            {
+                ExitWithError(exc.Message);
+            }
+        }
+
+        private static void StartGame()
+        {
+            if (!settings.isSteam)
+            {
+                if (File.Exists(settings.gamePath))
+                {
+                    var startInfo = new ProcessStartInfo();
+                    startInfo.FileName = Path.GetFileNameWithoutExtension(settings.gamePath);
+                    startInfo.WorkingDirectory = Path.GetDirectoryName(settings.gamePath);
+
+                    Process.Start(startInfo);
+                }
+                else
+                {
+                    ExitWithError(string.Format("Exe file at \"{0}\" not found, check game path setting.", settings.gamePath));
+                }
+            }
+            else
+                Process.Start(steamName);
+        }
+
+        private static void Patch()
+        {
+            //Finding game process
+            Process[] process = Process.GetProcessesByName(exeName);
+
+            if (process.Length == 0)
+                ExitWithError(string.Format("Can't find process: {0}.exe", exeName));
+
+            try
+            {
+                //Open process for writing
+                var num = (int)Program.OpenProcess(PROCESS_ALL_ACCESS, false, process[0].Id);
+
+                //Patching!
+                int output = 0;
+                WriteProcessMemory(num, offcetVID, vid, 2, ref output);
+                WriteProcessMemory(num, offcetPID, pid, 2, ref output);
+
+            }
+            catch (Exception)
+            {
+                ExitWithError("Patching error!");
+            }
+        }
+
+        private static void HotKeyManager_HotKeyPressed(object sender, HotKeyEventArgs e)
+        {
+            hkPressed = true;
+        }
+
+
         [STAThread]
         public static void Main(string[] args)
         {
             if (args.Length != 0)
             {
-                //Open settings window
-
-                Application.EnableVisualStyles();
-                Application.Run(new Settings());
+                if (args[0] == "-set")
+                {
+                    //Open settings window
+                    Application.EnableVisualStyles();
+                    Application.Run(new Settings());
+                }
             }
             else
             {
+                if (settings.Multiplayer)
+                {
+                    //Disable player2 record device
+                    SetDeviceState(settings.GUID2, false);
+
+                    hotkeyID = HotKeyManager.RegisterHotKey(Keys.M, KeyModifiers.Control);
+                    HotKeyManager.HotKeyPressed += new EventHandler<HotKeyEventArgs>(HotKeyManager_HotKeyPressed);
+                }
+
+                //Getting Offcets
+                GetOffcetValues();
+
+                //Getting PID&VID values for Player1
+                GetDeviceValues(false);
+
                 //Launching Rocksmith 2014
+                StartGame();
 
-                //Prepare and check Settings values
-
-                int offcetVID = 0;
-                int offcetPID = 0;
-                byte[] vid = new byte[2];
-                byte[] pid = new byte[2];
-
-                try
-                {
-                    //Getting RAM offcets
-                    offcetVID = FromHex(settings.offcetVID);
-                    offcetPID = FromHex(settings.offcetPID);
-
-                    //Getting device VID & PID
-                    vid = GetDevId(settings.VID);
-                    pid = GetDevId(settings.PID);
-
-                }
-                catch (Exception exc)
-                {
-                    ExitWithError(exc.Message);
-                }
-
-
-                string exeFile = exeName;
-
-                //Starting game
-                if (!settings.isSteam)
-                {
-                    if (File.Exists(settings.gamePath))
-                    {
-                        exeFile = Path.GetFileNameWithoutExtension(settings.gamePath);
-                        var startInfo = new ProcessStartInfo();
-                        startInfo.FileName = exeFile;
-                        startInfo.WorkingDirectory = Path.GetDirectoryName(settings.gamePath);
-
-                        Process.Start(startInfo);
-                    }
-                    else
-                    {
-                        ExitWithError(string.Format("Exe file at \"{0}\" not found, check game path setting.", settings.gamePath));
-                    }
-                }
-                else
-                    Process.Start(steamName);
-
-
-                //Waiting for process start
+                //Waiting while game starting
                 Thread.Sleep(settings.waitTime);
 
-                //Finding game process
-                Process[] process = Process.GetProcessesByName(exeFile);
+                //Patching game
+                Patch();
 
-                if (process.Length == 0)
-                    ExitWithError(string.Format("Can't find process: {0}.exe", exeFile));
-
-                try
+                if (settings.Multiplayer)
                 {
-                    //Open process for writing
-                    var num = (int)Program.OpenProcess(PROCESS_ALL_ACCESS, false, process[0].Id);
+                    //Waiting for hotkey
+                    //Application.Run();
 
-                    //Patching!
-                    int output = 0;
-                    WriteProcessMemory(num, offcetVID, vid, 2, ref output);
-                    WriteProcessMemory(num, offcetPID, pid, 2, ref output);
+                    //TODO: Change value by timer (if hotkey was not pressed)
+                    while (!hkPressed)
+                    {
+                        Thread.Sleep(100);
+                    }
 
-                }
-                catch (Exception)
-                {
-                    ExitWithError("Patching error!");
+                    //Getting PID&VID values for Player2
+                    GetDeviceValues(true);
+
+                    //Patching game for multiplayer
+                    Patch();
+
+                    //Enable player2 record device
+                    SetDeviceState(settings.GUID2, true);
+
+                    //Free hotkey
+                    HotKeyManager.UnregisterHotKey(hotkeyID);
                 }
 
             }

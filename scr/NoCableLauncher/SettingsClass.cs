@@ -1,5 +1,4 @@
-﻿
-namespace NoCableLauncher
+﻿namespace NoCableLauncher
 {
     class SettingsClass
     {
@@ -17,8 +16,6 @@ namespace NoCableLauncher
                     return defaultInstance;
                 }
             }
-
-
 
             [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
             [global::System.Configuration.UserScopedSettingAttribute()]
@@ -73,6 +70,22 @@ namespace NoCableLauncher
             [global::System.Configuration.UserScopedSettingAttribute()]
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.Configuration.DefaultSettingValueAttribute("0000")]
+            public string PID
+            {
+                get
+                {
+                    return ((string)(this["PID"]));
+                }
+                set
+                {
+                    this["PID"] = value;
+                }
+            }
+
+            [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
+            [global::System.Configuration.UserScopedSettingAttribute()]
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.Configuration.DefaultSettingValueAttribute("0000")]
             public string VID
             {
                 get
@@ -89,22 +102,73 @@ namespace NoCableLauncher
             [global::System.Configuration.UserScopedSettingAttribute()]
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.Configuration.DefaultSettingValueAttribute("0000")]
-            public string PID
+            public string PID2
             {
                 get
                 {
-                    return ((string)(this["PID"]));
+                    return ((string)(this["PID2"]));
                 }
                 set
                 {
-                    this["PID"] = value;
+                    this["PID2"] = value;
                 }
             }
 
             [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
             [global::System.Configuration.UserScopedSettingAttribute()]
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.Configuration.DefaultSettingValueAttribute("3000")]
+            [global::System.Configuration.DefaultSettingValueAttribute("0000")]
+            public string VID2
+            {
+                get
+                {
+                    return ((string)(this["VID2"]));
+                }
+                set
+                {
+                    this["VID2"] = value;
+                }
+            }
+
+            [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
+            [global::System.Configuration.UserScopedSettingAttribute()]
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.Configuration.DefaultSettingValueAttribute("")]
+            public string GUID1
+            {
+                get
+                {
+                    return ((string)(this["GUID1"]));
+                }
+                set
+                {
+                    this["GUID1"] = value;
+                }
+            }
+
+            [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
+            [global::System.Configuration.UserScopedSettingAttribute()]
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.Configuration.DefaultSettingValueAttribute("")]
+            public string GUID2
+            {
+                get
+                {
+                    return ((string)(this["GUID2"]));
+                }
+                set
+                {
+                    this["GUID2"] = value;
+                }
+            }
+
+           
+
+
+            [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
+            [global::System.Configuration.UserScopedSettingAttribute()]
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.Configuration.DefaultSettingValueAttribute("5000")]
             public int waitTime
             {
                 get
@@ -137,18 +201,49 @@ namespace NoCableLauncher
             [global::System.Configuration.UserScopedSettingAttribute()]
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.Configuration.DefaultSettingValueAttribute("False")]
-            public bool manualDev
+            public bool Multiplayer
             {
                 get
                 {
-                    return ((bool)(this["manualDev"]));
+                    return ((bool)(this["Multiplayer"]));
                 }
                 set
                 {
-                    this["manualDev"] = value;
+                    this["Multiplayer"] = value;
                 }
             }
-       
+
+            [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
+            [global::System.Configuration.UserScopedSettingAttribute()]
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.Configuration.DefaultSettingValueAttribute("False")]
+            public bool manualDev1
+            {
+                get
+                {
+                    return ((bool)(this["manualDev1"]));
+                }
+                set
+                {
+                    this["manualDev1"] = value;
+                }
+            }
+
+            [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
+            [global::System.Configuration.UserScopedSettingAttribute()]
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.Configuration.DefaultSettingValueAttribute("False")]
+            public bool manualDev2
+            {
+                get
+                {
+                    return ((bool)(this["manualDev2"]));
+                }
+                set
+                {
+                    this["manualDev2"] = value;
+                }
+            }
         }
     }
 }

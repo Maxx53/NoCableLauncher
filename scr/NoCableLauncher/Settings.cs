@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
-using System.Management;
 using System.ComponentModel;
-
+using NoCableLauncher.CoreAudioApi;
+using System.Diagnostics;
 
 namespace NoCableLauncher
 {
@@ -14,10 +14,12 @@ namespace NoCableLauncher
         }
 
         BindingList<SoundDevice> devices = new BindingList<SoundDevice>();
+        private static MMDeviceCollection pDevices;
+        private static MMDeviceEnumerator DeviceEnumerator = new MMDeviceEnumerator();
+        private static string defaultID = "0000";
 
         public class SoundDevice
         {
-
             public SoundDevice(string name, string vid, string pid)
             {
                 Name = name;
@@ -28,136 +30,225 @@ namespace NoCableLauncher
             public string Name { get; set; }
             public string Vid { get; set; }
             public string Pid { get; set; }
-
         }
 
 
         private void LoadDeviceList()
         {
             devices.Clear();
-            devices.Add(new SoundDevice("Default", "0000", "0000"));
 
-            ManagementPath path = new ManagementPath();
-            ManagementClass devs = null;
-            path.Server = ".";
-            path.NamespacePath = @"root\CIMV2";
-            path.RelativePath = @"Win32_SoundDevice";
-            using (devs = new ManagementClass(new ManagementScope(path), path, new ObjectGetOptions(null, new TimeSpan(0, 0, 0, 2), true)))
+            pDevices = DeviceEnumerator.EnumerateAudioEndPoints(EDataFlow.eCapture, EDeviceState.Active);
+
+            for (int i = 0; i < pDevices.Count; i++)
             {
-                ManagementObjectCollection moc = devs.GetInstances();
+                string devid = pDevices[i].HardwareID;
 
-                foreach (ManagementObject mo in moc)
+                string vid = defaultID;
+                string pid = defaultID;
+
+                if (devid.Contains("PID_"))
                 {
-                    PropertyDataCollection devsProperties = mo.Properties;
-                    string devid = devsProperties["DeviceID"].Value.ToString();
-                    if (devid.Contains("PID_"))
+                    vid = devid.Substring(devid.IndexOf("VID_") + 4, 4);
+                    pid = devid.Substring(devid.IndexOf("PID_") + 4, 4);
+                }
+
+                devices.Add(new SoundDevice(pDevices[i].FriendlyName, vid, pid));
+            }
+
+            p1DeviceCombo.DataSource = new BindingList<SoundDevice>(devices);
+            p1DeviceCombo.DisplayMember = "Name";
+
+            p2DeviceCombo.DataSource = new BindingList<SoundDevice>(devices);
+            p2DeviceCombo.DisplayMember = "Name";
+        }
+
+
+        private int GetDeviceIndex(string guid)
+        {
+            if (guid != string.Empty)
+            {
+                for (int i = 0; i < pDevices.Count; i++)
+                {
+                    if (pDevices[i].ID == guid)
                     {
-                        string vid = devid.Substring(devid.IndexOf("VID_") + 4, 4);
-                        string pid = devid.Substring(devid.IndexOf("PID_") + 4, 4);
-
-                        devices.Add(new SoundDevice(devsProperties["Caption"].Value.ToString(), vid, pid));
-
+                        return i;
                     }
                 }
             }
+
+            return 0;
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void Settings_Load(object sender, EventArgs e)
         {
-            comboBox1.DataSource = devices;
-            comboBox1.DisplayMember = "Name";
+            this.Icon = Properties.Resources.rs14;
 
             LoadDeviceList();
 
-            if (Program.settings.manualDev)
+            if (Program.settings.manualDev1)
             {
-                textBox2.Text = Program.settings.VID;
-                textBox3.Text = Program.settings.PID;
-                checkBox2.Checked = true;
+                p1vidTextBox.Text = Program.settings.VID;
+                p1pidTexBox.Text = Program.settings.PID;
+                p1manualCheckBox.Checked = true;
             }
             else
             {
-
-                for (int i = 0; i < devices.Count; i++)
-                {
-                    if (devices[i].Vid == Program.settings.VID)
-                    {
-                        comboBox1.SelectedIndex = i;
-
-                        break;
-                    }
-
-                }
-
-                comboBox1_SelectedIndexChanged(sender, e);
-                checkBox2_CheckedChanged(sender, e);
-
+                p1DeviceCombo.SelectedIndex = GetDeviceIndex(Program.settings.GUID1);
+                p1DeviceCombo_SelectedIndexChanged(null, e);
+                p1manualCheckBox_CheckedChanged(null, e);
             }
 
-            checkBox1.Checked = Program.settings.isSteam;
+            if (Program.settings.manualDev2)
+            {
+                p2vidTextBox.Text = Program.settings.VID2;
+                p2pidTexBox.Text = Program.settings.PID2;
+                p2manualCheckBox.Checked = true;
+            }
+            else
+            {
+                p2DeviceCombo.SelectedIndex = GetDeviceIndex(Program.settings.GUID2);
+                p2DeviceCombo_SelectedIndexChanged(null, e);
+                p2manualCheckBox_CheckedChanged(null, e);
+            }
 
-            textBox1.Text = Program.settings.gamePath;
-            textBox4.Text = Program.settings.offcetVID;
-            textBox5.Text = Program.settings.offcetPID;
+            multiplayerCheckBox.Checked = Program.settings.Multiplayer;
+            multiplayerCheckBox_CheckedChanged(null, e);
+
+            steamCheckBox.Checked = Program.settings.isSteam;
+
+            pathTextBox.Text = Program.settings.gamePath;
+            offcetVidTextBox.Text = Program.settings.offcetVID;
+            offcetPidTextBox.Text = Program.settings.offcetPID;
+
+            waitTimeNumeric.Value = Program.settings.waitTime;
 
         }
 
-
-        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        private void p1manualCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            textBox2.ReadOnly = !checkBox2.Checked;
-            textBox3.ReadOnly = !checkBox2.Checked;
-            comboBox1.Enabled = !checkBox2.Checked;
+            p1vidTextBox.ReadOnly = !p1manualCheckBox.Checked;
+            p1pidTexBox.ReadOnly = !p1manualCheckBox.Checked;
+            p1DeviceCombo.Enabled = !p1manualCheckBox.Checked;
         }
 
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void p2manualCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            textBox2.Text = devices[comboBox1.SelectedIndex].Vid;
-            textBox3.Text = devices[comboBox1.SelectedIndex].Pid;
+            p2vidTextBox.ReadOnly = !p2manualCheckBox.Checked;
+            p2pidTexBox.ReadOnly = !p2manualCheckBox.Checked;
+            p2DeviceCombo.Enabled = !p2manualCheckBox.Checked;
         }
 
-
-
-        private void button3_Click(object sender, EventArgs e)
+        private void p1DeviceCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Program.settings.gamePath = textBox1.Text;
-            Program.settings.VID = textBox2.Text;
-            Program.settings.PID = textBox3.Text;
-            Program.settings.offcetVID = textBox4.Text;
-            Program.settings.offcetPID = textBox5.Text;
-            Program.settings.manualDev = checkBox2.Checked;
-            Program.settings.isSteam = checkBox1.Checked;
+            if (devices.Count != 0)
+            {
+                p1vidTextBox.Text = devices[p1DeviceCombo.SelectedIndex].Vid;
+                p1pidTexBox.Text = devices[p1DeviceCombo.SelectedIndex].Pid;
+            }
+        }
+
+        private void p2DeviceCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (devices.Count != 0)
+            {
+                p2vidTextBox.Text = devices[p2DeviceCombo.SelectedIndex].Vid;
+                p2pidTexBox.Text = devices[p2DeviceCombo.SelectedIndex].Pid;
+            }
+        }
+
+        private void DeviceIDcheck()
+        {
+            if ((p2vidTextBox.Text == p1vidTextBox.Text) && (p1pidTexBox.Text == p2pidTexBox.Text) && multiplayerCheckBox.Checked)
+            {
+                MessageBox.Show("Player1 and Player2 have the same input device IDs." + Environment.NewLine +
+                                "Make it different, otherwise multiplayer will not work!", 
+                                 Application.ProductName + " Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void okButton_Click(object sender, EventArgs e)
+        {
+            DeviceIDcheck();
+
+            Program.settings.gamePath = pathTextBox.Text;
+            Program.settings.isSteam = steamCheckBox.Checked;
+
+            Program.settings.offcetVID = offcetVidTextBox.Text;
+            Program.settings.offcetPID = offcetPidTextBox.Text;
+
+            Program.settings.VID = p1vidTextBox.Text;
+            Program.settings.PID = p1pidTexBox.Text;
+            Program.settings.manualDev1 = p1manualCheckBox.Checked;
+
+            Program.settings.Multiplayer = multiplayerCheckBox.Checked;
+
+            Program.settings.VID2 = p2vidTextBox.Text;
+            Program.settings.PID2 = p2pidTexBox.Text;
+            Program.settings.manualDev2 = p2manualCheckBox.Checked;
+
+            Program.settings.waitTime = (int)waitTimeNumeric.Value;
+
+            Program.settings.GUID1 = pDevices[p1DeviceCombo.SelectedIndex].ID;
+            Program.settings.GUID2 = pDevices[p2DeviceCombo.SelectedIndex].ID;
+
             Program.settings.Save();
 
             Application.Exit();
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+
+        private void steamCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            textBox1.Text = Program.steamName;
-            textBox1.ReadOnly = checkBox1.Checked;
-            button1.Enabled = !checkBox1.Checked;
+            pathTextBox.Text = Program.steamName;
+            pathTextBox.ReadOnly = steamCheckBox.Checked;
+            browseButton.Enabled = !steamCheckBox.Checked;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void browseButton_Click(object sender, EventArgs e)
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                textBox1.Text = openFileDialog1.FileName;
+                pathTextBox.Text = openFileDialog1.FileName;
             }
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void cancelButton_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
+        private void multiplayerCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            player2GroupBox.Enabled = multiplayerCheckBox.Checked;
 
+            if (multiplayerCheckBox.Checked && sender != null)
+                DeviceIDcheck();
+        }
+
+        private void defOffcetButton_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Do you really want to reset offcets to default values?",
+                Application.ProductName + " Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == System.Windows.Forms.DialogResult.Yes)
+            {
+                offcetVidTextBox.Text = Program.settings.Properties["offcetVID"].DefaultValue.ToString();
+                offcetPidTextBox.Text = Program.settings.Properties["offcetPID"].DefaultValue.ToString();
+            }
+        }
+
+        private void inputDevButton_Click(object sender, EventArgs e)
+        {
+            Process.Start("control", "mmsys.cpl,,1");
+        }
+
+        private void p1DeviceCombo_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            DeviceIDcheck();
+        }
+
+        private void p1DeviceCombo_DropDown(object sender, EventArgs e)
+        {
+           // LoadDeviceList();
+        }
     }
 }
