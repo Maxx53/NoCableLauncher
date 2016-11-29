@@ -162,9 +162,7 @@
                 }
             }
 
-           
-
-
+        
             [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
             [global::System.Configuration.UserScopedSettingAttribute()]
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -180,6 +178,7 @@
                     this["waitTime"] = value;
                 }
             }
+
 
             [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
             [global::System.Configuration.UserScopedSettingAttribute()]

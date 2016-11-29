@@ -19,12 +19,12 @@ namespace NoCableLauncher
         static extern bool WriteProcessMemory(int hProcess, int lpBaseAddress,
           byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesWritten);
 
-        private const int PROCESS_ALL_ACCESS = 2035711;
+        public static SettingsClass.Settings settings = SettingsClass.Settings.Default;
+        private static PolicyConfigClient pPolicyConfig = new PolicyConfigClient();
 
         public const string steamName = "steam://rungameid/221680";
         private const string exeName = "Rocksmith2014";
-
-        public static SettingsClass.Settings settings = SettingsClass.Settings.Default;
+        private const int PROCESS_ALL_ACCESS = 2035711;
 
         private static int offcetVID = 0;
         private static int offcetPID = 0;
@@ -32,9 +32,11 @@ namespace NoCableLauncher
         private static byte[] pid = new byte[2];
 
         private static int hotkeyID = 0;
-        private static bool hkPressed = false;
+        private static int processID = 0;
 
-        private static PolicyConfigClient pPolicyConfig = new PolicyConfigClient();
+        private static bool stopWait = false;
+        private static bool gameRunning = false;
+
 
         public static void SetDeviceState(string guid, bool enabled = false)
         {
@@ -71,7 +73,9 @@ namespace NoCableLauncher
 
         private static void ExitWithError(string value)
         {
-            MessageBox.Show(value, Application.ProductName + " Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            if (value != string.Empty)
+                MessageBox.Show(value, Application.ProductName + " Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
             Environment.Exit(0);
         }
 
@@ -90,7 +94,6 @@ namespace NoCableLauncher
                     vid = GetDevId(settings.VID2);
                     pid = GetDevId(settings.PID2);
                 }
-
             }
             catch (Exception exc)
             {
@@ -114,6 +117,8 @@ namespace NoCableLauncher
 
         private static void StartGame()
         {
+            //Can't hook process at this moment
+            //We have to wait while game starts
             if (!settings.isSteam)
             {
                 if (File.Exists(settings.gamePath))
@@ -130,27 +135,47 @@ namespace NoCableLauncher
                 }
             }
             else
+                //This do not return game process!
                 Process.Start(steamName);
         }
 
-        private static void Patch()
+        private static void HookProcess()
         {
             //Finding game process
-            Process[] process = Process.GetProcessesByName(exeName);
+            Process[] processes = Process.GetProcessesByName(exeName);
 
-            if (process.Length == 0)
+            if (processes.Length == 0)
                 ExitWithError(string.Format("Can't find process: {0}.exe", exeName));
 
+            var process = processes[0];
+            processID = process.Id;
+
+            if (settings.Multiplayer)
+            {
+                process.EnableRaisingEvents = true;
+                process.Exited += process_Exited;
+                gameRunning = true;
+            }
+        }
+
+        private static void process_Exited(object sender, EventArgs e)
+        {
+            gameRunning = false;
+            stopWait = true;
+        }
+
+
+        private static void Patch()
+        {
             try
             {
                 //Open process for writing
-                var num = (int)Program.OpenProcess(PROCESS_ALL_ACCESS, false, process[0].Id);
+                var num = (int)Program.OpenProcess(PROCESS_ALL_ACCESS, false, processID);
 
                 //Patching!
                 int output = 0;
                 WriteProcessMemory(num, offcetVID, vid, 2, ref output);
                 WriteProcessMemory(num, offcetPID, pid, 2, ref output);
-
             }
             catch (Exception)
             {
@@ -158,11 +183,16 @@ namespace NoCableLauncher
             }
         }
 
-        private static void HotKeyManager_HotKeyPressed(object sender, HotKeyEventArgs e)
+        private static void InitHotKey()
         {
-            hkPressed = true;
+            hotkeyID = HotKeyManager.RegisterHotKey(Keys.M, KeyModifiers.Control);
+            HotKeyManager.HotKeyPressed += new EventHandler<HotKeyEventArgs>(HotKeyManager_HotKeyPressed);
         }
 
+        private static void HotKeyManager_HotKeyPressed(object sender, HotKeyEventArgs e)
+        {
+            stopWait = true;
+        }
 
         [STAThread]
         public static void Main(string[] args)
@@ -183,8 +213,8 @@ namespace NoCableLauncher
                     //Disable player2 record device
                     SetDeviceState(settings.GUID2, false);
 
-                    hotkeyID = HotKeyManager.RegisterHotKey(Keys.M, KeyModifiers.Control);
-                    HotKeyManager.HotKeyPressed += new EventHandler<HotKeyEventArgs>(HotKeyManager_HotKeyPressed);
+                    //Register hotkey and press event
+                    InitHotKey();
                 }
 
                 //Getting Offcets
@@ -199,25 +229,29 @@ namespace NoCableLauncher
                 //Waiting while game starting
                 Thread.Sleep(settings.waitTime);
 
+                //Getting process id and setting exit event
+                HookProcess();
+
                 //Patching game
                 Patch();
 
                 if (settings.Multiplayer)
                 {
                     //Waiting for hotkey
-                    //Application.Run();
-
-                    //TODO: Change value by timer (if hotkey was not pressed)
-                    while (!hkPressed)
+                    while (!stopWait)
                     {
                         Thread.Sleep(100);
                     }
 
-                    //Getting PID&VID values for Player2
-                    GetDeviceValues(true);
+                    //If game still running
+                    if (gameRunning)
+                    {
+                        //Getting PID&VID values for Player2
+                        GetDeviceValues(true);
 
-                    //Patching game for multiplayer
-                    Patch();
+                        //Patching game for multiplayer
+                        Patch();
+                    }
 
                     //Enable player2 record device
                     SetDeviceState(settings.GUID2, true);
@@ -225,8 +259,8 @@ namespace NoCableLauncher
                     //Free hotkey
                     HotKeyManager.UnregisterHotKey(hotkeyID);
                 }
-
             }
         }
+
     }
 }

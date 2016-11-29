@@ -60,6 +60,12 @@ namespace NoCableLauncher
 
             p2DeviceCombo.DataSource = new BindingList<SoundDevice>(devices);
             p2DeviceCombo.DisplayMember = "Name";
+
+            if (devices.Count == 0)
+            {
+                MessageBox.Show("Active input devices not found. Click \"Input devices\" for managing your input devices",
+                Application.ProductName + " Information!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
 
@@ -94,7 +100,9 @@ namespace NoCableLauncher
             }
             else
             {
-                p1DeviceCombo.SelectedIndex = GetDeviceIndex(Program.settings.GUID1);
+                if (devices.Count != 0)
+                    p1DeviceCombo.SelectedIndex = GetDeviceIndex(Program.settings.GUID1);
+
                 p1DeviceCombo_SelectionChangeCommitted(null, null);
                 p1manualCheckBox_CheckedChanged(null, e);
             }
@@ -107,7 +115,9 @@ namespace NoCableLauncher
             }
             else
             {
-                p2DeviceCombo.SelectedIndex = GetDeviceIndex(Program.settings.GUID2);
+                if (devices.Count != 0)
+                    p2DeviceCombo.SelectedIndex = GetDeviceIndex(Program.settings.GUID2);
+
                 p2DeviceCombo_SelectionChangeCommitted(null, null);
                 p2manualCheckBox_CheckedChanged(null, e);
             }
@@ -150,7 +160,7 @@ namespace NoCableLauncher
             }
         }
 
-        private void okButton_Click(object sender, EventArgs e)
+        private void SaveSettings()
         {
             DeviceIDcheck();
 
@@ -176,7 +186,11 @@ namespace NoCableLauncher
             Program.settings.GUID2 = pDevices[p2DeviceCombo.SelectedIndex].ID;
 
             Program.settings.Save();
+        }
 
+        private void okButton_Click(object sender, EventArgs e)
+        {
+            SaveSettings();
             Application.Exit();
         }
 
@@ -250,5 +264,30 @@ namespace NoCableLauncher
         {
            // LoadDeviceList();
         }
+
+        private void Settings_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                var result = MessageBox.Show("Do you want to save changes?", Application.ProductName + " Settings",
+                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+
+                switch (result)
+                {
+                    case DialogResult.Cancel:
+                        e.Cancel = true;
+                        break;
+                    case DialogResult.Yes:
+                        SaveSettings();
+                        break;
+                    case DialogResult.No:
+                        //Do nothing
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
     }
 }

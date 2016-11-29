@@ -176,7 +176,7 @@
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(77, 24);
             this.okButton.TabIndex = 7;
-            this.okButton.Text = "OK";
+            this.okButton.Text = "Save";
             this.okButton.UseVisualStyleBackColor = true;
             this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
@@ -448,6 +448,7 @@
             this.Name = "Settings";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "NoCableLauncher Settings";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Settings_FormClosing);
             this.Load += new System.EventHandler(this.Settings_Load);
             this.player1GroupBox.ResumeLayout(false);
             this.player1GroupBox.PerformLayout();
