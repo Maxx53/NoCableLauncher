@@ -42,16 +42,13 @@
             this.okButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
             this.offcetVidTextBox = new System.Windows.Forms.TextBox();
             this.offcetPidTextBox = new System.Windows.Forms.TextBox();
             this.player1GroupBox = new System.Windows.Forms.GroupBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.defOffcetButton = new System.Windows.Forms.Button();
-            this.waitTimeNumeric = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
             this.multiplayerCheckBox = new System.Windows.Forms.CheckBox();
             this.inputDevButton = new System.Windows.Forms.Button();
             this.player2GroupBox = new System.Windows.Forms.GroupBox();
@@ -65,7 +62,6 @@
             this.p2vidTextBox = new System.Windows.Forms.TextBox();
             this.player1GroupBox.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.waitTimeNumeric)).BeginInit();
             this.player2GroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -91,7 +87,7 @@
             this.steamCheckBox.Location = new System.Drawing.Point(79, 49);
             this.steamCheckBox.Name = "steamCheckBox";
             this.steamCheckBox.Size = new System.Drawing.Size(87, 17);
-            this.steamCheckBox.TabIndex = 2;
+            this.steamCheckBox.TabIndex = 3;
             this.steamCheckBox.Text = "Steam Game";
             this.steamCheckBox.UseVisualStyleBackColor = true;
             this.steamCheckBox.CheckedChanged += new System.EventHandler(this.steamCheckBox_CheckedChanged);
@@ -101,7 +97,7 @@
             this.browseButton.Location = new System.Drawing.Point(318, 23);
             this.browseButton.Name = "browseButton";
             this.browseButton.Size = new System.Drawing.Size(26, 20);
-            this.browseButton.TabIndex = 3;
+            this.browseButton.TabIndex = 2;
             this.browseButton.Text = "...";
             this.browseButton.UseVisualStyleBackColor = true;
             this.browseButton.Click += new System.EventHandler(this.browseButton_Click);
@@ -112,7 +108,7 @@
             this.p1DeviceCombo.Location = new System.Drawing.Point(80, 24);
             this.p1DeviceCombo.Name = "p1DeviceCombo";
             this.p1DeviceCombo.Size = new System.Drawing.Size(264, 21);
-            this.p1DeviceCombo.TabIndex = 5;
+            this.p1DeviceCombo.TabIndex = 8;
             this.p1DeviceCombo.DropDown += new System.EventHandler(this.p1DeviceCombo_DropDown);
             this.p1DeviceCombo.SelectionChangeCommitted += new System.EventHandler(this.p1DeviceCombo_SelectionChangeCommitted);
             // 
@@ -131,7 +127,7 @@
             this.p1vidTextBox.MaxLength = 4;
             this.p1vidTextBox.Name = "p1vidTextBox";
             this.p1vidTextBox.Size = new System.Drawing.Size(88, 20);
-            this.p1vidTextBox.TabIndex = 1;
+            this.p1vidTextBox.TabIndex = 10;
             // 
             // p1pidTexBox
             // 
@@ -139,7 +135,7 @@
             this.p1pidTexBox.MaxLength = 4;
             this.p1pidTexBox.Name = "p1pidTexBox";
             this.p1pidTexBox.Size = new System.Drawing.Size(88, 20);
-            this.p1pidTexBox.TabIndex = 1;
+            this.p1pidTexBox.TabIndex = 11;
             // 
             // label3
             // 
@@ -165,27 +161,27 @@
             this.p1manualCheckBox.Location = new System.Drawing.Point(80, 51);
             this.p1manualCheckBox.Name = "p1manualCheckBox";
             this.p1manualCheckBox.Size = new System.Drawing.Size(96, 17);
-            this.p1manualCheckBox.TabIndex = 2;
+            this.p1manualCheckBox.TabIndex = 9;
             this.p1manualCheckBox.Text = "Manual Values";
             this.p1manualCheckBox.UseVisualStyleBackColor = true;
             this.p1manualCheckBox.CheckedChanged += new System.EventHandler(this.p1manualCheckBox_CheckedChanged);
             // 
             // okButton
             // 
-            this.okButton.Location = new System.Drawing.Point(206, 434);
+            this.okButton.Location = new System.Drawing.Point(207, 404);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(77, 24);
-            this.okButton.TabIndex = 7;
+            this.okButton.TabIndex = 17;
             this.okButton.Text = "Save";
             this.okButton.UseVisualStyleBackColor = true;
             this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(289, 434);
+            this.cancelButton.Location = new System.Drawing.Point(290, 404);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(77, 24);
-            this.cancelButton.TabIndex = 8;
+            this.cancelButton.TabIndex = 18;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
@@ -199,28 +195,19 @@
             this.label5.TabIndex = 0;
             this.label5.Text = "VID Offcet";
             // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(7, 126);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(65, 13);
-            this.label11.TabIndex = 0;
-            this.label11.Text = "Patch Delay";
-            // 
             // offcetVidTextBox
             // 
             this.offcetVidTextBox.Location = new System.Drawing.Point(79, 72);
             this.offcetVidTextBox.Name = "offcetVidTextBox";
             this.offcetVidTextBox.Size = new System.Drawing.Size(86, 20);
-            this.offcetVidTextBox.TabIndex = 1;
+            this.offcetVidTextBox.TabIndex = 5;
             // 
             // offcetPidTextBox
             // 
             this.offcetPidTextBox.Location = new System.Drawing.Point(78, 98);
             this.offcetPidTextBox.Name = "offcetPidTextBox";
             this.offcetPidTextBox.Size = new System.Drawing.Size(86, 20);
-            this.offcetPidTextBox.TabIndex = 1;
+            this.offcetPidTextBox.TabIndex = 6;
             // 
             // player1GroupBox
             // 
@@ -231,7 +218,7 @@
             this.player1GroupBox.Controls.Add(this.p1DeviceCombo);
             this.player1GroupBox.Controls.Add(this.p1pidTexBox);
             this.player1GroupBox.Controls.Add(this.p1vidTextBox);
-            this.player1GroupBox.Location = new System.Drawing.Point(12, 165);
+            this.player1GroupBox.Location = new System.Drawing.Point(12, 137);
             this.player1GroupBox.Name = "player1GroupBox";
             this.player1GroupBox.Size = new System.Drawing.Size(354, 127);
             this.player1GroupBox.TabIndex = 8;
@@ -246,21 +233,18 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.defOffcetButton);
-            this.groupBox2.Controls.Add(this.waitTimeNumeric);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.pathTextBox);
             this.groupBox2.Controls.Add(this.browseButton);
-            this.groupBox2.Controls.Add(this.label10);
-            this.groupBox2.Controls.Add(this.label11);
             this.groupBox2.Controls.Add(this.multiplayerCheckBox);
             this.groupBox2.Controls.Add(this.offcetVidTextBox);
             this.groupBox2.Controls.Add(this.steamCheckBox);
             this.groupBox2.Controls.Add(this.offcetPidTextBox);
             this.groupBox2.Location = new System.Drawing.Point(12, 5);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(354, 153);
+            this.groupBox2.Size = new System.Drawing.Size(354, 126);
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Game";
@@ -270,37 +254,10 @@
             this.defOffcetButton.Location = new System.Drawing.Point(179, 85);
             this.defOffcetButton.Name = "defOffcetButton";
             this.defOffcetButton.Size = new System.Drawing.Size(77, 24);
-            this.defOffcetButton.TabIndex = 5;
+            this.defOffcetButton.TabIndex = 7;
             this.defOffcetButton.Text = "To Default";
             this.defOffcetButton.UseVisualStyleBackColor = true;
             this.defOffcetButton.Click += new System.EventHandler(this.defOffcetButton_Click);
-            // 
-            // waitTimeNumeric
-            // 
-            this.waitTimeNumeric.Increment = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.waitTimeNumeric.Location = new System.Drawing.Point(78, 124);
-            this.waitTimeNumeric.Maximum = new decimal(new int[] {
-            100000,
-            0,
-            0,
-            0});
-            this.waitTimeNumeric.Minimum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.waitTimeNumeric.Name = "waitTimeNumeric";
-            this.waitTimeNumeric.Size = new System.Drawing.Size(86, 20);
-            this.waitTimeNumeric.TabIndex = 4;
-            this.waitTimeNumeric.Value = new decimal(new int[] {
-            5000,
-            0,
-            0,
-            0});
             // 
             // label6
             // 
@@ -311,32 +268,23 @@
             this.label6.TabIndex = 0;
             this.label6.Text = "PID Offcet";
             // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(176, 126);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(20, 13);
-            this.label10.TabIndex = 0;
-            this.label10.Text = "ms";
-            // 
             // multiplayerCheckBox
             // 
             this.multiplayerCheckBox.AutoSize = true;
             this.multiplayerCheckBox.Location = new System.Drawing.Point(179, 49);
             this.multiplayerCheckBox.Name = "multiplayerCheckBox";
             this.multiplayerCheckBox.Size = new System.Drawing.Size(112, 17);
-            this.multiplayerCheckBox.TabIndex = 2;
+            this.multiplayerCheckBox.TabIndex = 4;
             this.multiplayerCheckBox.Text = "Enable Multiplayer";
             this.multiplayerCheckBox.UseVisualStyleBackColor = true;
             this.multiplayerCheckBox.CheckedChanged += new System.EventHandler(this.multiplayerCheckBox_CheckedChanged);
             // 
             // inputDevButton
             // 
-            this.inputDevButton.Location = new System.Drawing.Point(12, 435);
+            this.inputDevButton.Location = new System.Drawing.Point(13, 405);
             this.inputDevButton.Name = "inputDevButton";
-            this.inputDevButton.Size = new System.Drawing.Size(121, 23);
-            this.inputDevButton.TabIndex = 6;
+            this.inputDevButton.Size = new System.Drawing.Size(114, 23);
+            this.inputDevButton.TabIndex = 16;
             this.inputDevButton.Text = "Input Devices";
             this.inputDevButton.UseVisualStyleBackColor = true;
             this.inputDevButton.Click += new System.EventHandler(this.inputDevButton_Click);
@@ -351,7 +299,7 @@
             this.player2GroupBox.Controls.Add(this.p2DeviceCombo);
             this.player2GroupBox.Controls.Add(this.p2pidTexBox);
             this.player2GroupBox.Controls.Add(this.p2vidTextBox);
-            this.player2GroupBox.Location = new System.Drawing.Point(11, 298);
+            this.player2GroupBox.Location = new System.Drawing.Point(12, 270);
             this.player2GroupBox.Name = "player2GroupBox";
             this.player2GroupBox.Size = new System.Drawing.Size(355, 128);
             this.player2GroupBox.TabIndex = 8;
@@ -373,7 +321,7 @@
             this.p2manualCheckBox.Location = new System.Drawing.Point(80, 51);
             this.p2manualCheckBox.Name = "p2manualCheckBox";
             this.p2manualCheckBox.Size = new System.Drawing.Size(96, 17);
-            this.p2manualCheckBox.TabIndex = 2;
+            this.p2manualCheckBox.TabIndex = 13;
             this.p2manualCheckBox.Text = "Manual Values";
             this.p2manualCheckBox.UseVisualStyleBackColor = true;
             this.p2manualCheckBox.CheckedChanged += new System.EventHandler(this.p2manualCheckBox_CheckedChanged);
@@ -411,7 +359,7 @@
             this.p2DeviceCombo.Location = new System.Drawing.Point(80, 24);
             this.p2DeviceCombo.Name = "p2DeviceCombo";
             this.p2DeviceCombo.Size = new System.Drawing.Size(265, 21);
-            this.p2DeviceCombo.TabIndex = 5;
+            this.p2DeviceCombo.TabIndex = 12;
             this.p2DeviceCombo.DropDown += new System.EventHandler(this.p1DeviceCombo_DropDown);
             this.p2DeviceCombo.SelectionChangeCommitted += new System.EventHandler(this.p2DeviceCombo_SelectionChangeCommitted);
             // 
@@ -421,7 +369,7 @@
             this.p2pidTexBox.MaxLength = 4;
             this.p2pidTexBox.Name = "p2pidTexBox";
             this.p2pidTexBox.Size = new System.Drawing.Size(88, 20);
-            this.p2pidTexBox.TabIndex = 1;
+            this.p2pidTexBox.TabIndex = 14;
             // 
             // p2vidTextBox
             // 
@@ -429,13 +377,13 @@
             this.p2vidTextBox.MaxLength = 4;
             this.p2vidTextBox.Name = "p2vidTextBox";
             this.p2vidTextBox.Size = new System.Drawing.Size(88, 20);
-            this.p2vidTextBox.TabIndex = 1;
+            this.p2vidTextBox.TabIndex = 14;
             // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(378, 466);
+            this.ClientSize = new System.Drawing.Size(378, 434);
             this.Controls.Add(this.inputDevButton);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.player2GroupBox);
@@ -454,7 +402,6 @@
             this.player1GroupBox.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.waitTimeNumeric)).EndInit();
             this.player2GroupBox.ResumeLayout(false);
             this.player2GroupBox.PerformLayout();
             this.ResumeLayout(false);
@@ -477,7 +424,6 @@
         private System.Windows.Forms.Button okButton;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox offcetVidTextBox;
         private System.Windows.Forms.TextBox offcetPidTextBox;
         private System.Windows.Forms.GroupBox player1GroupBox;
@@ -492,9 +438,7 @@
         private System.Windows.Forms.TextBox p2pidTexBox;
         private System.Windows.Forms.TextBox p2vidTextBox;
         private System.Windows.Forms.CheckBox multiplayerCheckBox;
-        private System.Windows.Forms.NumericUpDown waitTimeNumeric;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button defOffcetButton;
         private System.Windows.Forms.Button inputDevButton;
         private System.Windows.Forms.Label label12;

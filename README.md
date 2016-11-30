@@ -22,7 +22,7 @@ This project uses [Core Audio API](https://github.com/morphx666/CoreAudio).
 
 ###Setting Tips
 
-![Settings Window](http://images.illuzor.com/uploads/rs14ncl2.png)
+![Settings Window](http://images.illuzor.com/uploads/rs14ncl.png)
 
 * If you have Steam-licensed Rocksmith 2014, check the "Steam game" box, otherwise leave this checkbox and browse game EXE-file by pressing "..." button.
 * "Device" сombobox contains all **active** found input audio devices in your system. Select the device connected to your guitar. If your device is not in the list, check the "Manual" box and set VID & PID values manually (find it in "Device manager"). VID & PID sets as "0000" means default non-USB input audio device, for example integrated Realtek microphone input.

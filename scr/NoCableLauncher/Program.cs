@@ -136,26 +136,40 @@ namespace NoCableLauncher
             }
             else
                 //This do not return game process!
+                //Steam starts game with some delay
                 Process.Start(steamName);
         }
 
+
         private static void HookProcess()
         {
-            //Finding game process
-            Process[] processes = Process.GetProcessesByName(exeName);
-
-            if (processes.Length == 0)
-                ExitWithError(string.Format("Can't find process: {0}.exe", exeName));
-
-            var process = processes[0];
-            processID = process.Id;
-
-            if (settings.Multiplayer)
+            //Waiting 60 seconds, while game starts
+            for (int i = 0; i < 60; i++)
             {
-                process.EnableRaisingEvents = true;
-                process.Exited += process_Exited;
-                gameRunning = true;
+                Thread.Sleep(1000);
+
+                //Finding game process
+                Process[] processes = Process.GetProcessesByName(exeName);
+
+                if (processes.Length > 0)
+                {
+                    //If game process found
+
+                    var process = processes[0];
+                    processID = process.Id;
+
+                    if (settings.Multiplayer)
+                    {
+                        process.EnableRaisingEvents = true;
+                        process.Exited += process_Exited;
+                        gameRunning = true;
+                    }
+
+                    return;
+                }
             }
+
+            ExitWithError(string.Format("Can't find process: {0}.exe", exeName));
         }
 
         private static void process_Exited(object sender, EventArgs e)
@@ -225,9 +239,6 @@ namespace NoCableLauncher
 
                 //Launching Rocksmith 2014
                 StartGame();
-
-                //Waiting while game starting
-                Thread.Sleep(settings.waitTime);
 
                 //Getting process id and setting exit event
                 HookProcess();

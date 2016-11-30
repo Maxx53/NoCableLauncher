@@ -4,6 +4,7 @@ using System.Xml;
 using System.Collections.Specialized;
 using System.Windows.Forms;
 using System.IO;
+using System.Linq;
 
 namespace NoCableLauncher
 {
@@ -70,7 +71,9 @@ namespace NoCableLauncher
 
         public override void SetPropertyValues(SettingsContext context, SettingsPropertyValueCollection collection)
         {
-            foreach (SettingsPropertyValue propertyValue in collection)
+           var sorted =  collection.Cast<SettingsPropertyValue>().OrderBy(s => s.Name);
+
+            foreach (SettingsPropertyValue propertyValue in sorted)
                 SetValue(propertyValue);
 
             try

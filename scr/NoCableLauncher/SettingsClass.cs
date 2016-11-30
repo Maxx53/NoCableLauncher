@@ -162,23 +162,6 @@
                 }
             }
 
-        
-            [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
-            [global::System.Configuration.UserScopedSettingAttribute()]
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.Configuration.DefaultSettingValueAttribute("5000")]
-            public int waitTime
-            {
-                get
-                {
-                    return ((int)(this["waitTime"]));
-                }
-                set
-                {
-                    this["waitTime"] = value;
-                }
-            }
-
 
             [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
             [global::System.Configuration.UserScopedSettingAttribute()]

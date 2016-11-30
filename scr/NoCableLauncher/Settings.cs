@@ -4,6 +4,7 @@ using System.ComponentModel;
 using NoCableLauncher.CoreAudioApi;
 using System.Diagnostics;
 
+
 namespace NoCableLauncher
 {
     public partial class Settings : Form
@@ -130,9 +131,6 @@ namespace NoCableLauncher
             pathTextBox.Text = Program.settings.gamePath;
             offcetVidTextBox.Text = Program.settings.offcetVID;
             offcetPidTextBox.Text = Program.settings.offcetPID;
-
-            waitTimeNumeric.Value = Program.settings.waitTime;
-
         }
 
         private void p1manualCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -179,8 +177,6 @@ namespace NoCableLauncher
             Program.settings.VID2 = p2vidTextBox.Text;
             Program.settings.PID2 = p2pidTexBox.Text;
             Program.settings.manualDev2 = p2manualCheckBox.Checked;
-
-            Program.settings.waitTime = (int)waitTimeNumeric.Value;
 
             Program.settings.GUID1 = pDevices[p1DeviceCombo.SelectedIndex].ID;
             Program.settings.GUID2 = pDevices[p2DeviceCombo.SelectedIndex].ID;
