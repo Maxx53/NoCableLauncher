@@ -37,7 +37,7 @@
             [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
             [global::System.Configuration.UserScopedSettingAttribute()]
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.Configuration.DefaultSettingValueAttribute("012C96EC")]
+            [global::System.Configuration.DefaultSettingValueAttribute("012DE6EC")]
             public string offcetVID
             {
                 get
@@ -53,7 +53,7 @@
             [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
             [global::System.Configuration.UserScopedSettingAttribute()]
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.Configuration.DefaultSettingValueAttribute("012C96F4")]
+            [global::System.Configuration.DefaultSettingValueAttribute("012DE6F4")]
             public string offcetPID
             {
                 get
