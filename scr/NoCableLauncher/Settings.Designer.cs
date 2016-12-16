@@ -60,6 +60,8 @@
             this.p2DeviceCombo = new System.Windows.Forms.ComboBox();
             this.p2pidTexBox = new System.Windows.Forms.TextBox();
             this.p2vidTextBox = new System.Windows.Forms.TextBox();
+            this.findOffcetsButton = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
             this.player1GroupBox.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.player2GroupBox.SuspendLayout();
@@ -232,6 +234,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label10);
+            this.groupBox2.Controls.Add(this.findOffcetsButton);
             this.groupBox2.Controls.Add(this.defOffcetButton);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.label6);
@@ -251,7 +255,7 @@
             // 
             // defOffcetButton
             // 
-            this.defOffcetButton.Location = new System.Drawing.Point(179, 85);
+            this.defOffcetButton.Location = new System.Drawing.Point(179, 94);
             this.defOffcetButton.Name = "defOffcetButton";
             this.defOffcetButton.Size = new System.Drawing.Size(77, 24);
             this.defOffcetButton.TabIndex = 7;
@@ -379,6 +383,25 @@
             this.p2vidTextBox.Size = new System.Drawing.Size(88, 20);
             this.p2vidTextBox.TabIndex = 14;
             // 
+            // findOffcetsButton
+            // 
+            this.findOffcetsButton.Location = new System.Drawing.Point(179, 69);
+            this.findOffcetsButton.Name = "findOffcetsButton";
+            this.findOffcetsButton.Size = new System.Drawing.Size(77, 23);
+            this.findOffcetsButton.TabIndex = 8;
+            this.findOffcetsButton.Text = "Find Offcets";
+            this.findOffcetsButton.UseVisualStyleBackColor = true;
+            this.findOffcetsButton.Click += new System.EventHandler(this.findOffcetsButton_Click);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(262, 74);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(87, 39);
+            this.label10.TabIndex = 9;
+            this.label10.Text = "Note: Start game\r\nbefore clicking\r\n\"Find Offcets\"\r\n";
+            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -442,5 +465,7 @@
         private System.Windows.Forms.Button defOffcetButton;
         private System.Windows.Forms.Button inputDevButton;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Button findOffcetsButton;
+        private System.Windows.Forms.Label label10;
     }
 }

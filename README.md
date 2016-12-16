@@ -8,9 +8,8 @@ Multiplayer fix based on [AutoIt script](https://dl.dropboxusercontent.com/u/128
 This project uses [Core Audio API](https://github.com/morphx666/CoreAudio).
 
 ###Downloads
-[NoCableLauncher-binary.rar (Old version)](https://dl.dropboxusercontent.com/u/1288526/NoCableLauncher-binary.rar)
 
-[NoCableLauncher-m-binary.rar (With multiplayer support)](https://dl.dropboxusercontent.com/u/1288526/NoCableLauncher-m-binary.rar)
+[NoCableLauncher-m-binary.rar (Lastest version with multiplayer support)](https://dl.dropboxusercontent.com/u/1288526/NoCableLauncher-m-binary.rar)
 
 ###Getting Started
 1) Unpack files to any folder.

@@ -285,5 +285,16 @@ namespace NoCableLauncher
             }
         }
 
+        private void findOffcetsButton_Click(object sender, EventArgs e)
+        {
+            var offcets = Program.SearchOffcets();
+            if (offcets != null)
+            {
+                offcetVidTextBox.Text = offcets.Item1;
+                offcetPidTextBox.Text = offcets.Item2;
+            }
+        }
+
+
     }
 }
