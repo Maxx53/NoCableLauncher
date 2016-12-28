@@ -172,7 +172,8 @@ namespace NoCableLauncher
             //Waiting 60 seconds, while game starts
             for (int i = 0; i < 60; i++)
             {
-                Thread.Sleep(1000);
+                //Delay hotfix
+                Thread.Sleep(3000);
 
                 //Finding game process
                 Process[] processes = Process.GetProcessesByName(exeName);
