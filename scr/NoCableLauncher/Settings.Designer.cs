@@ -47,7 +47,6 @@
             this.player1GroupBox = new System.Windows.Forms.GroupBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.defOffcetButton = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.multiplayerCheckBox = new System.Windows.Forms.CheckBox();
             this.inputDevButton = new System.Windows.Forms.Button();
@@ -60,8 +59,7 @@
             this.p2DeviceCombo = new System.Windows.Forms.ComboBox();
             this.p2pidTexBox = new System.Windows.Forms.TextBox();
             this.p2vidTextBox = new System.Windows.Forms.TextBox();
-            this.findOffcetsButton = new System.Windows.Forms.Button();
-            this.label10 = new System.Windows.Forms.Label();
+            this.manualOffcetsCheckbox = new System.Windows.Forms.CheckBox();
             this.player1GroupBox.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.player2GroupBox.SuspendLayout();
@@ -70,7 +68,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(45, 26);
+            this.label1.Location = new System.Drawing.Point(44, 26);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(29, 13);
             this.label1.TabIndex = 0;
@@ -170,7 +168,7 @@
             // 
             // okButton
             // 
-            this.okButton.Location = new System.Drawing.Point(207, 404);
+            this.okButton.Location = new System.Drawing.Point(207, 430);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(77, 24);
             this.okButton.TabIndex = 17;
@@ -180,7 +178,7 @@
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(290, 404);
+            this.cancelButton.Location = new System.Drawing.Point(290, 430);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(77, 24);
             this.cancelButton.TabIndex = 18;
@@ -191,7 +189,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(16, 75);
+            this.label5.Location = new System.Drawing.Point(17, 95);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(57, 13);
             this.label5.TabIndex = 0;
@@ -199,14 +197,14 @@
             // 
             // offcetVidTextBox
             // 
-            this.offcetVidTextBox.Location = new System.Drawing.Point(79, 72);
+            this.offcetVidTextBox.Location = new System.Drawing.Point(79, 95);
             this.offcetVidTextBox.Name = "offcetVidTextBox";
             this.offcetVidTextBox.Size = new System.Drawing.Size(86, 20);
             this.offcetVidTextBox.TabIndex = 5;
             // 
             // offcetPidTextBox
             // 
-            this.offcetPidTextBox.Location = new System.Drawing.Point(78, 98);
+            this.offcetPidTextBox.Location = new System.Drawing.Point(79, 120);
             this.offcetPidTextBox.Name = "offcetPidTextBox";
             this.offcetPidTextBox.Size = new System.Drawing.Size(86, 20);
             this.offcetPidTextBox.TabIndex = 6;
@@ -220,7 +218,7 @@
             this.player1GroupBox.Controls.Add(this.p1DeviceCombo);
             this.player1GroupBox.Controls.Add(this.p1pidTexBox);
             this.player1GroupBox.Controls.Add(this.p1vidTextBox);
-            this.player1GroupBox.Location = new System.Drawing.Point(12, 137);
+            this.player1GroupBox.Location = new System.Drawing.Point(12, 162);
             this.player1GroupBox.Name = "player1GroupBox";
             this.player1GroupBox.Size = new System.Drawing.Size(354, 127);
             this.player1GroupBox.TabIndex = 8;
@@ -234,9 +232,7 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.label10);
-            this.groupBox2.Controls.Add(this.findOffcetsButton);
-            this.groupBox2.Controls.Add(this.defOffcetButton);
+            this.groupBox2.Controls.Add(this.manualOffcetsCheckbox);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.label5);
@@ -248,25 +244,15 @@
             this.groupBox2.Controls.Add(this.offcetPidTextBox);
             this.groupBox2.Location = new System.Drawing.Point(12, 5);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(354, 126);
+            this.groupBox2.Size = new System.Drawing.Size(354, 151);
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Game";
             // 
-            // defOffcetButton
-            // 
-            this.defOffcetButton.Location = new System.Drawing.Point(179, 94);
-            this.defOffcetButton.Name = "defOffcetButton";
-            this.defOffcetButton.Size = new System.Drawing.Size(77, 24);
-            this.defOffcetButton.TabIndex = 7;
-            this.defOffcetButton.Text = "To Default";
-            this.defOffcetButton.UseVisualStyleBackColor = true;
-            this.defOffcetButton.Click += new System.EventHandler(this.defOffcetButton_Click);
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(15, 100);
+            this.label6.Location = new System.Drawing.Point(16, 123);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(57, 13);
             this.label6.TabIndex = 0;
@@ -275,7 +261,7 @@
             // multiplayerCheckBox
             // 
             this.multiplayerCheckBox.AutoSize = true;
-            this.multiplayerCheckBox.Location = new System.Drawing.Point(179, 49);
+            this.multiplayerCheckBox.Location = new System.Drawing.Point(195, 49);
             this.multiplayerCheckBox.Name = "multiplayerCheckBox";
             this.multiplayerCheckBox.Size = new System.Drawing.Size(112, 17);
             this.multiplayerCheckBox.TabIndex = 4;
@@ -285,7 +271,7 @@
             // 
             // inputDevButton
             // 
-            this.inputDevButton.Location = new System.Drawing.Point(13, 405);
+            this.inputDevButton.Location = new System.Drawing.Point(13, 431);
             this.inputDevButton.Name = "inputDevButton";
             this.inputDevButton.Size = new System.Drawing.Size(114, 23);
             this.inputDevButton.TabIndex = 16;
@@ -303,7 +289,7 @@
             this.player2GroupBox.Controls.Add(this.p2DeviceCombo);
             this.player2GroupBox.Controls.Add(this.p2pidTexBox);
             this.player2GroupBox.Controls.Add(this.p2vidTextBox);
-            this.player2GroupBox.Location = new System.Drawing.Point(12, 270);
+            this.player2GroupBox.Location = new System.Drawing.Point(12, 295);
             this.player2GroupBox.Name = "player2GroupBox";
             this.player2GroupBox.Size = new System.Drawing.Size(355, 128);
             this.player2GroupBox.TabIndex = 8;
@@ -383,30 +369,22 @@
             this.p2vidTextBox.Size = new System.Drawing.Size(88, 20);
             this.p2vidTextBox.TabIndex = 14;
             // 
-            // findOffcetsButton
+            // manualOffcetsCheckbox
             // 
-            this.findOffcetsButton.Location = new System.Drawing.Point(179, 69);
-            this.findOffcetsButton.Name = "findOffcetsButton";
-            this.findOffcetsButton.Size = new System.Drawing.Size(77, 23);
-            this.findOffcetsButton.TabIndex = 8;
-            this.findOffcetsButton.Text = "Find Offcets";
-            this.findOffcetsButton.UseVisualStyleBackColor = true;
-            this.findOffcetsButton.Click += new System.EventHandler(this.findOffcetsButton_Click);
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(262, 74);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(87, 39);
-            this.label10.TabIndex = 9;
-            this.label10.Text = "Note: Start game\r\nbefore clicking\r\n\"Find Offcets\"\r\n";
+            this.manualOffcetsCheckbox.AutoSize = true;
+            this.manualOffcetsCheckbox.Location = new System.Drawing.Point(79, 72);
+            this.manualOffcetsCheckbox.Name = "manualOffcetsCheckbox";
+            this.manualOffcetsCheckbox.Size = new System.Drawing.Size(98, 17);
+            this.manualOffcetsCheckbox.TabIndex = 8;
+            this.manualOffcetsCheckbox.Text = "Manual Offcets";
+            this.manualOffcetsCheckbox.UseVisualStyleBackColor = true;
+            this.manualOffcetsCheckbox.CheckedChanged += new System.EventHandler(this.manualOffcetsCheckbox_CheckedChanged);
             // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(378, 434);
+            this.ClientSize = new System.Drawing.Size(378, 464);
             this.Controls.Add(this.inputDevButton);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.player2GroupBox);
@@ -462,10 +440,8 @@
         private System.Windows.Forms.TextBox p2vidTextBox;
         private System.Windows.Forms.CheckBox multiplayerCheckBox;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button defOffcetButton;
         private System.Windows.Forms.Button inputDevButton;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Button findOffcetsButton;
-        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.CheckBox manualOffcetsCheckbox;
     }
 }

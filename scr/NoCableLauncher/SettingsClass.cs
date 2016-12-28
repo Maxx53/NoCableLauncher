@@ -199,6 +199,23 @@
             [global::System.Configuration.UserScopedSettingAttribute()]
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.Configuration.DefaultSettingValueAttribute("False")]
+            public bool manualOffcets
+            {
+                get
+                {
+                    return ((bool)(this["manualOffcets"]));
+                }
+                set
+                {
+                    this["manualOffcets"] = value;
+                }
+            }
+
+
+            [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
+            [global::System.Configuration.UserScopedSettingAttribute()]
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.Configuration.DefaultSettingValueAttribute("False")]
             public bool manualDev1
             {
                 get

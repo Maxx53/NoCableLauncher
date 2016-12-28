@@ -129,8 +129,11 @@ namespace NoCableLauncher
             steamCheckBox.Checked = Program.settings.isSteam;
 
             pathTextBox.Text = Program.settings.gamePath;
+
+            manualOffcetsCheckbox.Checked = Program.settings.manualOffcets;
             offcetVidTextBox.Text = Program.settings.offcetVID;
             offcetPidTextBox.Text = Program.settings.offcetPID;
+            manualOffcetsCheckbox_CheckedChanged(null, e);
         }
 
         private void p1manualCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -147,6 +150,11 @@ namespace NoCableLauncher
             p2DeviceCombo.Enabled = !p2manualCheckBox.Checked;
         }
 
+        private void manualOffcetsCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            offcetPidTextBox.ReadOnly = !manualOffcetsCheckbox.Checked;
+            offcetVidTextBox.ReadOnly = !manualOffcetsCheckbox.Checked;
+        }
 
         private void DeviceIDcheck()
         {
@@ -167,6 +175,7 @@ namespace NoCableLauncher
 
             Program.settings.offcetVID = offcetVidTextBox.Text;
             Program.settings.offcetPID = offcetPidTextBox.Text;
+            Program.settings.manualOffcets = manualOffcetsCheckbox.Checked;
 
             Program.settings.VID = p1vidTextBox.Text;
             Program.settings.PID = p1pidTexBox.Text;
@@ -219,15 +228,6 @@ namespace NoCableLauncher
                 DeviceIDcheck();
         }
 
-        private void defOffcetButton_Click(object sender, EventArgs e)
-        {
-            if (MessageBox.Show("Do you really want to reset offcets to default values?",
-                Application.ProductName + " Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == System.Windows.Forms.DialogResult.Yes)
-            {
-                offcetVidTextBox.Text = Program.settings.Properties["offcetVID"].DefaultValue.ToString();
-                offcetPidTextBox.Text = Program.settings.Properties["offcetPID"].DefaultValue.ToString();
-            }
-        }
 
         private void inputDevButton_Click(object sender, EventArgs e)
         {
@@ -284,17 +284,5 @@ namespace NoCableLauncher
                 }
             }
         }
-
-        private void findOffcetsButton_Click(object sender, EventArgs e)
-        {
-            var offcets = Program.SearchOffcets();
-            if (offcets != null)
-            {
-                offcetVidTextBox.Text = offcets.Item1;
-                offcetPidTextBox.Text = offcets.Item2;
-            }
-        }
-
-
     }
 }

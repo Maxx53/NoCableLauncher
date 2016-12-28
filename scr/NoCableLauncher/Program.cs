@@ -48,7 +48,17 @@ namespace NoCableLauncher
         private static readonly byte[] pattern = new byte[] { rtVid[0], rtVid[1], 146, 10, 16, 192, 17, 192, rtPid[0], rtPid[1] };
 
         private static int hotkeyID = 0;
-        private static int hProcess = 0;
+
+        //Game process handle
+        private static pInfo procInfo = new pInfo();
+
+        private struct pInfo
+        {
+            public int Handle;
+            public int StartAddress;
+            public int Size;
+        }
+
 
         private static bool stopWait = false;
         private static bool gameRunning = false;
@@ -95,7 +105,7 @@ namespace NoCableLauncher
             Environment.Exit(0);
         }
 
-        private static void GetDeviceValues(bool multiplayer)
+        private static void ReadDeviceValues(bool multiplayer)
         {
             try
             {
@@ -117,7 +127,7 @@ namespace NoCableLauncher
             }
         }
 
-        private static void GetOffcetValues()
+        private static void ReadOffcetValues()
         {
             try
             {
@@ -174,7 +184,9 @@ namespace NoCableLauncher
                     var process = processes[0];
 
                     //Open process for writing
-                    hProcess = (int)Program.OpenProcess(PROCESS_ALL_ACCESS, false, process.Id);
+                    procInfo.Handle = (int)Program.OpenProcess(PROCESS_ALL_ACCESS, false, process.Id);
+                    procInfo.StartAddress = (int)process.Modules[0].BaseAddress;
+                    procInfo.Size = process.Modules[0].ModuleMemorySize;
 
                     if (settings.Multiplayer)
                     {
@@ -202,37 +214,27 @@ namespace NoCableLauncher
             byte[] retVid = new byte[2];
             byte[] retPid = new byte[2];
 
-            ReadProcessMemory(hProcess, offcetVID, retVid, 2, ref output);
-            ReadProcessMemory(hProcess, offcetPID, retPid, 2, ref output);
+            ReadProcessMemory(procInfo.Handle, offcetVID, retVid, 2, ref output);
+            ReadProcessMemory(procInfo.Handle, offcetPID, retPid, 2, ref output);
 
             return (retPid.SequenceEqual(rtPid) && retVid.SequenceEqual(rtVid));
         }
 
 
-        public static Tuple<string,string> SearchOffcets()
+        private static void FindOffcets()
         {
-            //Finding game process
-            Process[] processes = Process.GetProcessesByName(exeName);
-
-            if (processes.Length != 0)
+            try
             {
-                var process = processes[0];
-                var startAdress = (int)process.Modules[0].BaseAddress;
-                var sizetoAllocate = process.Modules[0].ModuleMemorySize;
-                byte[] buffer = new byte[sizetoAllocate];
+                byte[] buffer = new byte[procInfo.Size];
                 int bytesread = 0;
-
-                //Open process
-                var pHandle = (int)Program.OpenProcess(PROCESS_ALL_ACCESS, false, process.Id);
-
-                //Reading process bytes
-                ReadProcessMemory(pHandle, startAdress, buffer, sizetoAllocate, ref bytesread);
-                CloseHandle(pHandle);
-
                 int counter = 0;
+
+                //Reading exe bytes to buffer
+                ReadProcessMemory(procInfo.Handle, procInfo.StartAddress, buffer, procInfo.Size, ref bytesread);
 
                 if (pattern.Length <= buffer.Length)
                 {
+                    //Finding values by pattern
                     for (int i = 0; i < buffer.Length; i++)
                     {
                         if (buffer[i] == pattern[0])
@@ -245,24 +247,33 @@ namespace NoCableLauncher
 
                                     if (counter == pattern.Length)
                                     {
-                                        var result = i + startAdress;
+                                        var result = i + procInfo.StartAddress;
 
-                                        return new Tuple<string, string>(result.ToString("X8"),
-                                                  (result + pattern.Length - 2).ToString("X8"));
+                                        offcetVID = result;
+                                        offcetPID = result + (pattern.Length - 2);
+
+                                        //Saving new offcets to settings
+                                        settings.offcetVID = offcetVID.ToString("X8");
+                                        settings.offcetPID = offcetPID.ToString("X8");
+                                        settings.Save();
+
+                                        return;
                                     }
                                 }
-                                else counter = 0;
+                                else
+                                    counter = 0;
                             }
                         }
                     }
                 }
+
+                ExitWithError("Offcets not found!");
             }
-            else
-                MessageBox.Show("Game process not found. Start game first!", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-            return null;
+            catch (Exception exc)
+            {
+                ExitWithError(exc.Message);
+            }
         }
-
 
         private static void Patch()
         {
@@ -270,8 +281,8 @@ namespace NoCableLauncher
             {
                 //Patching!
                 int output = 0;
-                WriteProcessMemory(hProcess, offcetVID, vid, 2, ref output);
-                WriteProcessMemory(hProcess, offcetPID, pid, 2, ref output);
+                WriteProcessMemory(procInfo.Handle, offcetVID, vid, 2, ref output);
+                WriteProcessMemory(procInfo.Handle, offcetPID, pid, 2, ref output);
             }
             catch (Exception)
             {
@@ -300,27 +311,7 @@ namespace NoCableLauncher
                     //Open settings window
                     Application.EnableVisualStyles();
                     Application.Run(new Settings());
-                }
-                else
-                if (args[0] == "-fof")
-                {
-                    //Find offcets and write it to settings
-                    var offsets = SearchOffcets();
-                    if (offsets != null)
-                    {
-                        if (MessageBox.Show("Offcets found!"+ Environment.NewLine +
-                            "VID Offcet: " + offsets.Item1 + Environment.NewLine +
-                            "PID Offcet: " + offsets.Item2 + Environment.NewLine +
-                            "Save It to settings?", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                        {
-                            settings.offcetVID = offsets.Item1;
-                            settings.offcetPID = offsets.Item2;
-                            settings.Save();
-                        }
-                    }
-                    else
-                        MessageBox.Show("Offcets NOT found!", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
+                }    
             }
             else
             {
@@ -333,11 +324,11 @@ namespace NoCableLauncher
                     InitHotKey();
                 }
 
-                //Getting Offcets
-                GetOffcetValues();
+                //Reading Offcets
+                ReadOffcetValues();
 
-                //Getting PID&VID values for Player1
-                GetDeviceValues(false);
+                //Reading PID&VID values for Player1
+                ReadDeviceValues(false);
 
                 //Launching Rocksmith 2014
                 StartGame();
@@ -346,7 +337,14 @@ namespace NoCableLauncher
                 HookProcess();
 
                 //Checking offcets to write
-                if (CheckOffcets() == false) ExitWithError("Offcets values are wrong! Set It in settings.");
+                if (CheckOffcets() == false)
+                {
+                    if (settings.manualOffcets)
+                        ExitWithError("Offcets values are wrong! Set proper values manually in settings or uncheck \"Manual Offcets\" to find it automatically.");
+                    else
+                        //Find offcets automatically
+                        FindOffcets();
+                }
 
                 //Patching game
                 Patch();
@@ -362,8 +360,8 @@ namespace NoCableLauncher
                     //If game still running
                     if (gameRunning)
                     {
-                        //Getting PID&VID values for Player2
-                        GetDeviceValues(true);
+                        //Reading PID&VID values for Player2
+                        ReadDeviceValues(true);
 
                         //Patching game for multiplayer
                         Patch();
@@ -375,8 +373,10 @@ namespace NoCableLauncher
                     //Free hotkey
                     HotKeyManager.UnregisterHotKey(hotkeyID);
                 }
+
+                //Closing game handle
+                CloseHandle(procInfo.Handle);
             }
         }
-
     }
 }
