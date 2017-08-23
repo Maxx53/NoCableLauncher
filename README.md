@@ -7,11 +7,11 @@ Multiplayer fix based on [AutoIt script](https://dl.dropboxusercontent.com/u/128
 
 This project uses [Core Audio API](https://github.com/morphx666/CoreAudio).
 
-###Downloads
+### Downloads
 
 [NoCableLauncher-m-binary.rar (Lastest version with multiplayer support)](https://www.dropbox.com/s/4a7l3ggd94jjd2z/NoCableLauncher-m-binary.rar)
 
-###Getting Started
+### Getting Started
 1) Unpack files to any folder.
 
 2) Configure launcher using friendly UI by running "EditSettings.bat".
@@ -19,7 +19,7 @@ This project uses [Core Audio API](https://github.com/morphx666/CoreAudio).
 3) Run "NoCableLauncher.exe" for playing Rocksmith 2014 using your own audio interface!
 
 
-###Setting Tips
+### Setting Tips
 
 ![Settings Window](http://images.illuzor.com/uploads/rs14ncl.png)
 
