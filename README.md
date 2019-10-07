@@ -1,4 +1,5 @@
 # NoCableLauncher
+
 Rocksmith 2014 Launcher for playing without original RealTone cable (nocable fix).
 
 Working principle based on [this information](http://cs.rin.ru/forum/viewtopic.php?f=10&t=63705&p=1006201#p1006201).
@@ -7,19 +8,27 @@ Multiplayer fix based on [AutoIt script](https://dl.dropboxusercontent.com/u/128
 
 This project uses [Core Audio API](https://github.com/morphx666/CoreAudio).
 
-### Downloads
+## Motivation
+
+The game isn't developed to work with normal inputs, just because the game can't support random audio card or specific drivers configuration other to create a plug-and-play functionality as the RealTone cable offers along with the game.
+
+Even if the 2014 remastered version offers a "mic input" option, it was meant for accoustic guitars, not electric. That means that the game won't reproduce any played notes/sounds because it will consider you will already be listening to your own accoustic guitar and will cover the songs guitar lines with a default audio.
+
+This launcher allows you to use your own ipnut as if it was a RealTone cable by making the game "understand" that input as the Rocksmith product, so you get the game working perfectly with your common p2-p10 cable with all RealTone Cable available features.
+
+## Downloads
 
 [NoCableLauncher-m-binary.rar (Lastest version with multiplayer support)](https://www.dropbox.com/s/4a7l3ggd94jjd2z/NoCableLauncher-m-binary.rar)
 
-### Getting Started
+## Getting Started
+
 1) Unpack files to any folder.
 
 2) Configure launcher using friendly UI by running "EditSettings.bat".
 
 3) Run "NoCableLauncher.exe" for playing Rocksmith 2014 using your own audio interface!
 
-
-### Setting Tips
+## Setting Tips
 
 ![Settings Window](http://images.illuzor.com/uploads/rs14ncl.png)
 
