@@ -1,11 +1,14 @@
-﻿namespace NoCableLauncher
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace NoCableLauncher
 {
     partial class Settings
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -42,8 +45,8 @@
             this.okButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
-            this.offcetVidTextBox = new System.Windows.Forms.TextBox();
-            this.offcetPidTextBox = new System.Windows.Forms.TextBox();
+            this.offsetVidTextBox = new System.Windows.Forms.TextBox();
+            this.offsetPidTextBox = new System.Windows.Forms.TextBox();
             this.player1GroupBox = new System.Windows.Forms.GroupBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -59,7 +62,7 @@
             this.p2DeviceCombo = new System.Windows.Forms.ComboBox();
             this.p2pidTexBox = new System.Windows.Forms.TextBox();
             this.p2vidTextBox = new System.Windows.Forms.TextBox();
-            this.manualOffcetsCheckbox = new System.Windows.Forms.CheckBox();
+            this.manualOffsetsCheckbox = new System.Windows.Forms.CheckBox();
             this.player1GroupBox.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.player2GroupBox.SuspendLayout();
@@ -193,21 +196,21 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(57, 13);
             this.label5.TabIndex = 0;
-            this.label5.Text = "VID Offcet";
+            this.label5.Text = "VID Offset";
             // 
-            // offcetVidTextBox
+            // offsetVidTextBox
             // 
-            this.offcetVidTextBox.Location = new System.Drawing.Point(79, 95);
-            this.offcetVidTextBox.Name = "offcetVidTextBox";
-            this.offcetVidTextBox.Size = new System.Drawing.Size(86, 20);
-            this.offcetVidTextBox.TabIndex = 5;
+            this.offsetVidTextBox.Location = new System.Drawing.Point(79, 95);
+            this.offsetVidTextBox.Name = "offsetVidTextBox";
+            this.offsetVidTextBox.Size = new System.Drawing.Size(86, 20);
+            this.offsetVidTextBox.TabIndex = 5;
             // 
-            // offcetPidTextBox
+            // offsetPidTextBox
             // 
-            this.offcetPidTextBox.Location = new System.Drawing.Point(79, 120);
-            this.offcetPidTextBox.Name = "offcetPidTextBox";
-            this.offcetPidTextBox.Size = new System.Drawing.Size(86, 20);
-            this.offcetPidTextBox.TabIndex = 6;
+            this.offsetPidTextBox.Location = new System.Drawing.Point(79, 120);
+            this.offsetPidTextBox.Name = "offsetPidTextBox";
+            this.offsetPidTextBox.Size = new System.Drawing.Size(86, 20);
+            this.offsetPidTextBox.TabIndex = 6;
             // 
             // player1GroupBox
             // 
@@ -232,16 +235,16 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.manualOffcetsCheckbox);
+            this.groupBox2.Controls.Add(this.manualOffsetsCheckbox);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.pathTextBox);
             this.groupBox2.Controls.Add(this.browseButton);
             this.groupBox2.Controls.Add(this.multiplayerCheckBox);
-            this.groupBox2.Controls.Add(this.offcetVidTextBox);
+            this.groupBox2.Controls.Add(this.offsetVidTextBox);
             this.groupBox2.Controls.Add(this.steamCheckBox);
-            this.groupBox2.Controls.Add(this.offcetPidTextBox);
+            this.groupBox2.Controls.Add(this.offsetPidTextBox);
             this.groupBox2.Location = new System.Drawing.Point(12, 5);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(354, 151);
@@ -256,7 +259,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(57, 13);
             this.label6.TabIndex = 0;
-            this.label6.Text = "PID Offcet";
+            this.label6.Text = "PID Offset";
             // 
             // multiplayerCheckBox
             // 
@@ -369,16 +372,16 @@
             this.p2vidTextBox.Size = new System.Drawing.Size(88, 20);
             this.p2vidTextBox.TabIndex = 14;
             // 
-            // manualOffcetsCheckbox
+            // manualOffsetsCheckbox
             // 
-            this.manualOffcetsCheckbox.AutoSize = true;
-            this.manualOffcetsCheckbox.Location = new System.Drawing.Point(79, 72);
-            this.manualOffcetsCheckbox.Name = "manualOffcetsCheckbox";
-            this.manualOffcetsCheckbox.Size = new System.Drawing.Size(98, 17);
-            this.manualOffcetsCheckbox.TabIndex = 8;
-            this.manualOffcetsCheckbox.Text = "Manual Offcets";
-            this.manualOffcetsCheckbox.UseVisualStyleBackColor = true;
-            this.manualOffcetsCheckbox.CheckedChanged += new System.EventHandler(this.manualOffcetsCheckbox_CheckedChanged);
+            this.manualOffsetsCheckbox.AutoSize = true;
+            this.manualOffsetsCheckbox.Location = new System.Drawing.Point(79, 72);
+            this.manualOffsetsCheckbox.Name = "manualOffsetsCheckbox";
+            this.manualOffsetsCheckbox.Size = new System.Drawing.Size(98, 17);
+            this.manualOffsetsCheckbox.TabIndex = 8;
+            this.manualOffsetsCheckbox.Text = "Manual Offsets";
+            this.manualOffsetsCheckbox.UseVisualStyleBackColor = true;
+            this.manualOffsetsCheckbox.CheckedChanged += new System.EventHandler(this.manualOffsetsCheckbox_CheckedChanged);
             // 
             // Settings
             // 
@@ -411,37 +414,37 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox pathTextBox;
-        private System.Windows.Forms.CheckBox steamCheckBox;
-        private System.Windows.Forms.Button browseButton;
-        private System.Windows.Forms.ComboBox p1DeviceCombo;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox p1vidTextBox;
-        private System.Windows.Forms.TextBox p1pidTexBox;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.CheckBox p1manualCheckBox;
-        private System.Windows.Forms.Button okButton;
-        private System.Windows.Forms.Button cancelButton;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox offcetVidTextBox;
-        private System.Windows.Forms.TextBox offcetPidTextBox;
-        private System.Windows.Forms.GroupBox player1GroupBox;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.GroupBox player2GroupBox;
-        private System.Windows.Forms.CheckBox p2manualCheckBox;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.ComboBox p2DeviceCombo;
-        private System.Windows.Forms.TextBox p2pidTexBox;
-        private System.Windows.Forms.TextBox p2vidTextBox;
-        private System.Windows.Forms.CheckBox multiplayerCheckBox;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button inputDevButton;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.CheckBox manualOffcetsCheckbox;
+        private Label label1;
+        private TextBox pathTextBox;
+        private CheckBox steamCheckBox;
+        private Button browseButton;
+        private ComboBox p1DeviceCombo;
+        private Label label2;
+        private TextBox p1vidTextBox;
+        private TextBox p1pidTexBox;
+        private Label label3;
+        private Label label4;
+        private CheckBox p1manualCheckBox;
+        private Button okButton;
+        private Button cancelButton;
+        private Label label5;
+        private TextBox offsetVidTextBox;
+        private TextBox offsetPidTextBox;
+        private GroupBox player1GroupBox;
+        private OpenFileDialog openFileDialog1;
+        private GroupBox groupBox2;
+        private GroupBox player2GroupBox;
+        private CheckBox p2manualCheckBox;
+        private Label label7;
+        private Label label8;
+        private Label label9;
+        private ComboBox p2DeviceCombo;
+        private TextBox p2pidTexBox;
+        private TextBox p2vidTextBox;
+        private CheckBox multiplayerCheckBox;
+        private Label label6;
+        private Button inputDevButton;
+        private Label label12;
+        private CheckBox manualOffsetsCheckbox;
     }
 }

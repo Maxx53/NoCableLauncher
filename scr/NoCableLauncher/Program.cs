@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using System.Diagnostics;
-using System.Threading;
-using System.Windows.Forms;
 using System.Globalization;
 using System.IO;
-using NoCableLauncher.CoreAudioApi;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Windows.Forms;
+using NoCableLauncher.CoreAudioApi;
 
 namespace NoCableLauncher
 {
@@ -17,51 +17,51 @@ namespace NoCableLauncher
                bool bInheritHandle, int dwProcessId);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool WriteProcessMemory(int hProcess, int lpBaseAddress,
+        static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress,
           byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesWritten);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool ReadProcessMemory(int hProcess, int lpBaseAddress, 
+        static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, 
           byte[] lpBuffer, int nSize, ref int lpNumberOfBytesRead);
 
         [DllImport("kernel32", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern
-        bool CloseHandle(int handle);
+        bool CloseHandle(IntPtr hHandle);
 
         public static SettingsClass.Settings settings = SettingsClass.Settings.Default;
         private static PolicyConfigClient pPolicyConfig = new PolicyConfigClient();
 
         public const string steamName = "steam://rungameid/221680";
         private const string exeName = "Rocksmith2014";
-        private const int PROCESS_ALL_ACCESS = 2035711;
+        private const int PROCESS_ALL_ACCESS = 0x1F0FFF;
 
-        private static int offcetVID = 0;
-        private static int offcetPID = 0;
+        private static IntPtr offsetVID;
+        private static IntPtr offsetPID;
         private static byte[] vid = new byte[2];
         private static byte[] pid = new byte[2];
 
         //Realtone Cable ID's
-        private static readonly byte[] rtVid = new byte[2] { 186, 18 };
-        private static readonly byte[] rtPid = new byte[2] { 255, 0 };
+        private static readonly byte[] rtVid = { 0xBA, 0x12 };
+        private static readonly byte[] rtPid = { 0xFF, 0x0 };
 
         //Pattern to find cable ID's
-        private static readonly byte[] pattern = new byte[] { rtVid[0], rtVid[1], 146, 10, 16, 192, 17, 192, rtPid[0], rtPid[1] };
+        private static readonly byte[] pattern = { rtVid[0], rtVid[1], 0x92, 0x0A, 0x10, 0xC0, 0x11, 0xC0, rtPid[0], rtPid[1] };
 
-        private static int hotkeyID = 0;
+        private static int hotkeyID;
 
         //Game process handle
-        private static pInfo procInfo = new pInfo();
+        private static pInfo procInfo;
 
         private struct pInfo
         {
-            public int Handle;
-            public int StartAddress;
+            public IntPtr Handle;
+            public IntPtr StartAddress;
             public int Size;
         }
 
 
-        private static bool stopWait = false;
-        private static bool gameRunning = false;
+        private static bool stopWait;
+        private static bool gameRunning;
 
 
         public static void SetDeviceState(string guid, bool enabled = false)
@@ -80,7 +80,7 @@ namespace NoCableLauncher
             {
                 value = value.Substring(2);
             }
-            return Int32.Parse(value, NumberStyles.HexNumber);
+            return int.Parse(value, NumberStyles.HexNumber);
         }
 
         public static byte GetByte(string value)
@@ -100,7 +100,7 @@ namespace NoCableLauncher
         private static void ExitWithError(string value)
         {
             if (value != string.Empty)
-                MessageBox.Show(value, Application.ProductName + " Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(value, $"{Application.ProductName} Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             Environment.Exit(0);
         }
@@ -127,13 +127,13 @@ namespace NoCableLauncher
             }
         }
 
-        private static void ReadOffcetValues()
+        private static void ReadOffsetValues()
         {
             try
             {
-                //Getting RAM offcets
-                offcetVID = FromHex(settings.offcetVID);
-                offcetPID = FromHex(settings.offcetPID);
+                //Getting RAM offsets
+                offsetVID = new IntPtr(FromHex(settings.offsetVID));
+                offsetPID = new IntPtr(FromHex(settings.offsetPID));
             }
             catch (Exception exc)
             {
@@ -149,15 +149,17 @@ namespace NoCableLauncher
             {
                 if (File.Exists(settings.gamePath))
                 {
-                    var startInfo = new ProcessStartInfo();
-                    startInfo.FileName = Path.GetFileNameWithoutExtension(settings.gamePath);
-                    startInfo.WorkingDirectory = Path.GetDirectoryName(settings.gamePath);
+                    var startInfo = new ProcessStartInfo
+                    {
+                        FileName = Path.GetFileNameWithoutExtension(settings.gamePath),
+                        WorkingDirectory = Path.GetDirectoryName(settings.gamePath)
+                    };
 
                     Process.Start(startInfo);
                 }
                 else
                 {
-                    ExitWithError(string.Format("Exe file at \"{0}\" not found, check game path setting.", settings.gamePath));
+                    ExitWithError($"Exe file at \"{settings.gamePath}\" not found, check game path setting.");
                 }
             }
             else
@@ -178,29 +180,27 @@ namespace NoCableLauncher
                 //Finding game process
                 Process[] processes = Process.GetProcessesByName(exeName);
 
-                if (processes.Length > 0)
-                {
-                    //If game process found
+                if (processes.Length <= 0) continue;
 
-                    var process = processes[0];
+                //If game process found
 
-                    //Open process for writing
-                    procInfo.Handle = (int)Program.OpenProcess(PROCESS_ALL_ACCESS, false, process.Id);
-                    procInfo.StartAddress = (int)process.Modules[0].BaseAddress;
-                    procInfo.Size = process.Modules[0].ModuleMemorySize;
+                var process = processes[0];
 
-                    if (settings.Multiplayer)
-                    {
-                        process.EnableRaisingEvents = true;
-                        process.Exited += process_Exited;
-                        gameRunning = true;
-                    }
+                //Open process for writing
+                procInfo.Handle = OpenProcess(PROCESS_ALL_ACCESS, false, process.Id);
+                procInfo.StartAddress = process.Modules[0].BaseAddress;
+                procInfo.Size = process.Modules[0].ModuleMemorySize;
 
-                    return;
-                }
+                if (!settings.Multiplayer) return;
+
+                process.EnableRaisingEvents = true;
+                process.Exited += process_Exited;
+                gameRunning = true;
+
+                return;
             }
 
-            ExitWithError(string.Format("Can't find process: {0}.exe", exeName));
+            ExitWithError($"Can't find process: {exeName}.exe");
         }
 
         private static void process_Exited(object sender, EventArgs e)
@@ -209,20 +209,20 @@ namespace NoCableLauncher
             stopWait = true;
         }
 
-        private static bool CheckOffcets()
+        private static bool CheckOffsets()
         {
             int output = 0;
             byte[] retVid = new byte[2];
             byte[] retPid = new byte[2];
 
-            ReadProcessMemory(procInfo.Handle, offcetVID, retVid, 2, ref output);
-            ReadProcessMemory(procInfo.Handle, offcetPID, retPid, 2, ref output);
+            ReadProcessMemory(procInfo.Handle, offsetVID, retVid, 2, ref output);
+            ReadProcessMemory(procInfo.Handle, offsetPID, retPid, 2, ref output);
 
             return (retPid.SequenceEqual(rtPid) && retVid.SequenceEqual(rtVid));
         }
 
 
-        private static void FindOffcets()
+        private static void FindOffsets()
         {
             try
             {
@@ -248,14 +248,14 @@ namespace NoCableLauncher
 
                                     if (counter == pattern.Length)
                                     {
-                                        var result = i + procInfo.StartAddress;
+                                        var result = procInfo.StartAddress + i;
 
-                                        offcetVID = result;
-                                        offcetPID = result + (pattern.Length - 2);
+                                        offsetVID = result;
+                                        offsetPID = result + (pattern.Length - 2);
 
-                                        //Saving new offcets to settings
-                                        settings.offcetVID = offcetVID.ToString("X8");
-                                        settings.offcetPID = offcetPID.ToString("X8");
+                                        //Saving new offsets to settings
+                                        settings.offsetVID = offsetVID.ToString("X8");
+                                        settings.offsetPID = offsetPID.ToString("X8");
                                         settings.Save();
 
                                         return;
@@ -268,7 +268,7 @@ namespace NoCableLauncher
                     }
                 }
 
-                ExitWithError("Offcets not found!");
+                ExitWithError("Offsets not found!");
             }
             catch (Exception exc)
             {
@@ -282,8 +282,8 @@ namespace NoCableLauncher
             {
                 //Patching!
                 int output = 0;
-                WriteProcessMemory(procInfo.Handle, offcetVID, vid, 2, ref output);
-                WriteProcessMemory(procInfo.Handle, offcetPID, pid, 2, ref output);
+                WriteProcessMemory(procInfo.Handle, offsetVID, vid, 2, ref output);
+                WriteProcessMemory(procInfo.Handle, offsetPID, pid, 2, ref output);
             }
             catch (Exception)
             {
@@ -294,7 +294,7 @@ namespace NoCableLauncher
         private static void InitHotKey()
         {
             hotkeyID = HotKeyManager.RegisterHotKey(Keys.M, KeyModifiers.Control);
-            HotKeyManager.HotKeyPressed += new EventHandler<HotKeyEventArgs>(HotKeyManager_HotKeyPressed);
+            HotKeyManager.HotKeyPressed += HotKeyManager_HotKeyPressed;
         }
 
         private static void HotKeyManager_HotKeyPressed(object sender, HotKeyEventArgs e)
@@ -319,14 +319,14 @@ namespace NoCableLauncher
                 if (settings.Multiplayer)
                 {
                     //Disable player2 record device
-                    SetDeviceState(settings.GUID2, false);
+                    SetDeviceState(settings.GUID2);
 
                     //Register hotkey and press event
                     InitHotKey();
                 }
 
-                //Reading Offcets
-                ReadOffcetValues();
+                //Reading Offsets
+                ReadOffsetValues();
 
                 //Reading PID&VID values for Player1
                 ReadDeviceValues(false);
@@ -337,14 +337,14 @@ namespace NoCableLauncher
                 //Getting process id and setting exit event
                 HookProcess();
 
-                //Checking offcets to write
-                if (CheckOffcets() == false)
+                //Checking offsets to write
+                if (CheckOffsets() == false)
                 {
-                    if (settings.manualOffcets)
-                        ExitWithError("Offcets values are wrong! Set proper values manually in settings or uncheck \"Manual Offcets\" to find it automatically.");
+                    if (settings.manualOffsets)
+                        ExitWithError("Offsets values are wrong! Set proper values manually in settings or uncheck \"Manual Offsets\" to find it automatically.");
                     else
-                        //Find offcets automatically
-                        FindOffcets();
+                        //Find offsets automatically
+                        FindOffsets();
                 }
 
                 //Patching game

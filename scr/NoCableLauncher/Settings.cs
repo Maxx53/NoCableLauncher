@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Windows.Forms;
 using System.ComponentModel;
-using NoCableLauncher.CoreAudioApi;
 using System.Diagnostics;
-
+using System.Windows.Forms;
+using NoCableLauncher.CoreAudioApi;
+using NoCableLauncher.Properties;
 
 namespace NoCableLauncher
 {
@@ -89,7 +89,7 @@ namespace NoCableLauncher
 
         private void Settings_Load(object sender, EventArgs e)
         {
-            this.Icon = Properties.Resources.rs14;
+            Icon = Resources.rs14;
 
             LoadDeviceList();
 
@@ -130,10 +130,10 @@ namespace NoCableLauncher
 
             pathTextBox.Text = Program.settings.gamePath;
 
-            manualOffcetsCheckbox.Checked = Program.settings.manualOffcets;
-            offcetVidTextBox.Text = Program.settings.offcetVID;
-            offcetPidTextBox.Text = Program.settings.offcetPID;
-            manualOffcetsCheckbox_CheckedChanged(null, e);
+            manualOffsetsCheckbox.Checked = Program.settings.manualOffsets;
+            offsetVidTextBox.Text = Program.settings.offsetVID;
+            offsetPidTextBox.Text = Program.settings.offsetPID;
+            manualOffsetsCheckbox_CheckedChanged(null, e);
         }
 
         private void p1manualCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -150,10 +150,10 @@ namespace NoCableLauncher
             p2DeviceCombo.Enabled = !p2manualCheckBox.Checked;
         }
 
-        private void manualOffcetsCheckbox_CheckedChanged(object sender, EventArgs e)
+        private void manualOffsetsCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            offcetPidTextBox.ReadOnly = !manualOffcetsCheckbox.Checked;
-            offcetVidTextBox.ReadOnly = !manualOffcetsCheckbox.Checked;
+            offsetPidTextBox.ReadOnly = !manualOffsetsCheckbox.Checked;
+            offsetVidTextBox.ReadOnly = !manualOffsetsCheckbox.Checked;
         }
 
         private void DeviceIDcheck()
@@ -173,9 +173,9 @@ namespace NoCableLauncher
             Program.settings.gamePath = pathTextBox.Text;
             Program.settings.isSteam = steamCheckBox.Checked;
 
-            Program.settings.offcetVID = offcetVidTextBox.Text;
-            Program.settings.offcetPID = offcetPidTextBox.Text;
-            Program.settings.manualOffcets = manualOffcetsCheckbox.Checked;
+            Program.settings.offsetVID = offsetVidTextBox.Text;
+            Program.settings.offsetPID = offsetPidTextBox.Text;
+            Program.settings.manualOffsets = manualOffsetsCheckbox.Checked;
 
             Program.settings.VID = p1vidTextBox.Text;
             Program.settings.PID = p1pidTexBox.Text;
@@ -278,8 +278,6 @@ namespace NoCableLauncher
                         break;
                     case DialogResult.No:
                         //Do nothing
-                        break;
-                    default:
                         break;
                 }
             }
