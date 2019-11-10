@@ -347,7 +347,7 @@ namespace NoCableLauncher
             }
         }
 
-        private const string SettingsFileBat = "EditSettings.bat";
+        private const string SettingsFileBat = "NCL_EditSettings.bat";
 
         [STAThread]
         public static void Main(string[] args)
@@ -393,12 +393,6 @@ namespace NoCableLauncher
                 if (!settings.Multiplayer)
                 {
                     FixRecordingDevices();
-
-                    if (Program.settings.SingleplayerMode == 1)
-                    {
-                        // Register hotkey and press event
-                        InitHotKey();
-                    }
                 }
                 else if (IsDeviceUsbAndConnected(settings.PID, settings.VID))
                 {
@@ -460,17 +454,39 @@ namespace NoCableLauncher
                 }
                 else // !settings.Multiplayer
                 {
-                    if(Program.settings.SingleplayerMode == 1)
+                    if (Program.settings.SingleplayerMode == 0)
                     {
-                        // Wait for the CTRL-M hotkey to be pressed so we can prevent device detection and re-enable the disabled devices
-                        while (!stopWait)
-                            Thread.Sleep(100);
+                        bool okPressed = false;
 
-                        // TODO: Disable game device detection
+                        // Process watch
+                        var context = TaskScheduler.FromCurrentSynchronizationContext();
+                        Task T = Task.Factory.StartNew(() =>
+                        {
+                            while (true)
+                            {
+                                Process[] processes = Process.GetProcessesByName(exeName);
+                                if (processes.Length <= 0)
+                                {
+                                    // Ouch
+                                    CloseHandle(procInfo.Handle);
+                                    Application.Exit();
+                                }
 
+                                if (okPressed)
+                                    break;
 
-                        // Free hotkey
-                        HotKeyManager.UnregisterHotKey(hotkeyID);
+                                Thread.Sleep(50);
+                            }
+                        });
+
+                        // Wait for the ok prompt
+                        MessageBox.Show("After the game is opened and in the main menu, press ALT-TAB to change back to this window and press 'OK'.", "Info");
+                        okPressed = true;
+
+                        ReadDeviceValues(true);
+                        Patch();
+
+                        Thread.Sleep(500);
                     }
                 }
 
@@ -479,7 +495,7 @@ namespace NoCableLauncher
 
                 if (!settings.Multiplayer)
                 {
-                    if (Program.settings.SingleplayerMode == 0)
+                    if (Program.settings.SingleplayerMode == 1)
                     {
                         // Wait for the game to close so we can re-enable the disabled devices
                         while (true)

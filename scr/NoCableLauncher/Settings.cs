@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NoCableLauncher.CoreAudioApi;
@@ -110,9 +111,14 @@ namespace NoCableLauncher
             if(Program.settings.SingleplayerMode == 1)
                 spDisableEnableRadioButton.Checked = true;
             else
-                spFakeMultiaplyerButton.Checked = true;
+                spFakeMultiplayerRadioButton.Checked = true;
 
             CheckIfOnboardDevice();
+
+            // Check if the configuration file exists, if not, create it
+            if (!File.Exists(PortableSettingsProvider.SettingsFileName))
+                SaveSettings();
+
             loaded = true;
         }
 
@@ -342,15 +348,25 @@ namespace NoCableLauncher
         private void infoButton2_Click(object sender, EventArgs e)
         {
             MessageBox.Show("All audio capture devices except the one used in-game will be disabled when the game opens.\r\n\r\n" +
-                "After the game is opened and you are in the main menu press CTRL-M, this will prevent the game from recognizing any other device and re-enable the disabled ones.\r\n\r\n" +
+                "After the game is opened and in the main menu, press ALT-TAB to leave the game and press 'OK' on the message prompt, this will prevent the game from recognizing any other device and re-enable the disabled ones.\r\n\r\n" +
                 "This allows you to use your microphone or any other device outside the game (assuming the game is not in exclusive mode)."
                 , "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void spRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            Program.settings.SingleplayerMode = spDisableEnableRadioButton.Checked ? 0 : 1;
+            Program.settings.SingleplayerMode = spDisableEnableRadioButton.Checked ? 1 : 0;
             _SettingsChanged(sender, e);
+        }
+
+        private void spDisableEnableLabel_Click(object sender, EventArgs e)
+        {
+            spDisableEnableRadioButton.Checked = true;
+        }
+
+        private void spFakeMultiplayerLabel_Click(object sender, EventArgs e)
+        {
+            spDisableEnableRadioButton.Checked = true;
         }
     }
 }

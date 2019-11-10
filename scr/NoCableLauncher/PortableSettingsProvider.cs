@@ -10,6 +10,7 @@ namespace NoCableLauncher
 {
     public sealed class PortableSettingsProvider : SettingsProvider, IApplicationSettingsProvider
     {
+        public const string SettingsFileName = "NCL_Settings.xml";
         private const string _rootNodeName = "settings";
         private const string _className = "PortableSettingsProvider";
         private XmlDocument _xmlDocument;
@@ -18,7 +19,7 @@ namespace NoCableLauncher
         {
             get
             {
-                return Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "Settings.xml");
+                return Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), SettingsFileName);
             }
         }
 

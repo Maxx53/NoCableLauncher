@@ -69,15 +69,16 @@ namespace NoCableLauncher
             this.launchGameButton = new System.Windows.Forms.Button();
             this.spOnBoardGroupBox = new System.Windows.Forms.GroupBox();
             this.spDisableEnableRadioButton = new System.Windows.Forms.RadioButton();
-            this.spFakeMultiaplyerButton = new System.Windows.Forms.RadioButton();
+            this.spFakeMultiplayerRadioButton = new System.Windows.Forms.RadioButton();
             this.infoButton2 = new System.Windows.Forms.Button();
             this.infoButton1 = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
+            this.spDisableEnableLabel = new System.Windows.Forms.Label();
+            this.spFakeMultiplayerLabel = new System.Windows.Forms.Label();
             this.aboutButton = new System.Windows.Forms.Button();
             this.singlePlayerGroupBox = new System.Windows.Forms.GroupBox();
             this.label14 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
             this.player1GroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.refreshPictureBox1)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -459,12 +460,12 @@ namespace NoCableLauncher
             // spOnBoardGroupBox
             // 
             this.spOnBoardGroupBox.Controls.Add(this.spDisableEnableRadioButton);
-            this.spOnBoardGroupBox.Controls.Add(this.spFakeMultiaplyerButton);
+            this.spOnBoardGroupBox.Controls.Add(this.spFakeMultiplayerRadioButton);
             this.spOnBoardGroupBox.Controls.Add(this.infoButton2);
             this.spOnBoardGroupBox.Controls.Add(this.infoButton1);
             this.spOnBoardGroupBox.Controls.Add(this.label10);
-            this.spOnBoardGroupBox.Controls.Add(this.label13);
-            this.spOnBoardGroupBox.Controls.Add(this.label11);
+            this.spOnBoardGroupBox.Controls.Add(this.spDisableEnableLabel);
+            this.spOnBoardGroupBox.Controls.Add(this.spFakeMultiplayerLabel);
             this.spOnBoardGroupBox.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.spOnBoardGroupBox.Location = new System.Drawing.Point(12, 295);
             this.spOnBoardGroupBox.Name = "spOnBoardGroupBox";
@@ -477,24 +478,24 @@ namespace NoCableLauncher
             // spDisableEnableRadioButton
             // 
             this.spDisableEnableRadioButton.AutoSize = true;
-            this.spDisableEnableRadioButton.Checked = true;
             this.spDisableEnableRadioButton.Location = new System.Drawing.Point(275, 62);
             this.spDisableEnableRadioButton.Name = "spDisableEnableRadioButton";
             this.spDisableEnableRadioButton.Size = new System.Drawing.Size(14, 13);
             this.spDisableEnableRadioButton.TabIndex = 22;
-            this.spDisableEnableRadioButton.TabStop = true;
             this.spDisableEnableRadioButton.UseVisualStyleBackColor = true;
             this.spDisableEnableRadioButton.CheckedChanged += new System.EventHandler(this.spRadioButton_CheckedChanged);
             // 
-            // spFakeMultiaplyerButton
+            // spFakeMultiplayerRadioButton
             // 
-            this.spFakeMultiaplyerButton.AutoSize = true;
-            this.spFakeMultiaplyerButton.Location = new System.Drawing.Point(275, 86);
-            this.spFakeMultiaplyerButton.Name = "spFakeMultiaplyerButton";
-            this.spFakeMultiaplyerButton.Size = new System.Drawing.Size(14, 13);
-            this.spFakeMultiaplyerButton.TabIndex = 22;
-            this.spFakeMultiaplyerButton.UseVisualStyleBackColor = true;
-            this.spFakeMultiaplyerButton.CheckedChanged += new System.EventHandler(this.spRadioButton_CheckedChanged);
+            this.spFakeMultiplayerRadioButton.AutoSize = true;
+            this.spFakeMultiplayerRadioButton.Checked = true;
+            this.spFakeMultiplayerRadioButton.Location = new System.Drawing.Point(275, 86);
+            this.spFakeMultiplayerRadioButton.Name = "spFakeMultiplayerRadioButton";
+            this.spFakeMultiplayerRadioButton.Size = new System.Drawing.Size(14, 13);
+            this.spFakeMultiplayerRadioButton.TabIndex = 22;
+            this.spFakeMultiplayerRadioButton.TabStop = true;
+            this.spFakeMultiplayerRadioButton.UseVisualStyleBackColor = true;
+            this.spFakeMultiplayerRadioButton.CheckedChanged += new System.EventHandler(this.spRadioButton_CheckedChanged);
             // 
             // infoButton2
             // 
@@ -529,23 +530,25 @@ namespace NoCableLauncher
             this.label10.TabIndex = 17;
             this.label10.Text = "To prevent duplicated Rocksmith controllers choose one:";
             // 
-            // label13
+            // spDisableEnableLabel
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(38, 62);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(227, 13);
-            this.label13.TabIndex = 17;
-            this.label13.Text = "Disable devices and re-enable on game closes";
+            this.spDisableEnableLabel.AutoSize = true;
+            this.spDisableEnableLabel.Location = new System.Drawing.Point(38, 62);
+            this.spDisableEnableLabel.Name = "spDisableEnableLabel";
+            this.spDisableEnableLabel.Size = new System.Drawing.Size(222, 13);
+            this.spDisableEnableLabel.TabIndex = 17;
+            this.spDisableEnableLabel.Text = "Disable devices and re-enable on game close";
+            this.spDisableEnableLabel.Click += new System.EventHandler(this.spDisableEnableLabel_Click);
             // 
-            // label11
+            // spFakeMultiplayerLabel
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(38, 86);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(219, 13);
-            this.label11.TabIndex = 17;
-            this.label11.Text = "Prevent game from recognizing more devices";
+            this.spFakeMultiplayerLabel.AutoSize = true;
+            this.spFakeMultiplayerLabel.Location = new System.Drawing.Point(38, 86);
+            this.spFakeMultiplayerLabel.Name = "spFakeMultiplayerLabel";
+            this.spFakeMultiplayerLabel.Size = new System.Drawing.Size(219, 13);
+            this.spFakeMultiplayerLabel.TabIndex = 17;
+            this.spFakeMultiplayerLabel.Text = "Prevent game from recognizing more devices";
+            this.spFakeMultiplayerLabel.Click += new System.EventHandler(this.spFakeMultiplayerLabel_Click);
             // 
             // aboutButton
             // 
@@ -573,12 +576,22 @@ namespace NoCableLauncher
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(67, 50);
+            this.label14.Location = new System.Drawing.Point(63, 50);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(231, 26);
             this.label14.TabIndex = 18;
             this.label14.Text = "Since you are not using the onboard soundcard\r\nthere should be no device conflict" +
     "s.";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(189, 471);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(45, 12);
+            this.label11.TabIndex = 24;
+            this.label11.Text = "NCL v2.0";
             // 
             // Settings
             // 
@@ -586,6 +599,7 @@ namespace NoCableLauncher
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(378, 490);
+            this.Controls.Add(this.label11);
             this.Controls.Add(this.aboutButton);
             this.Controls.Add(this.launchGameButton);
             this.Controls.Add(this.inputDevButton);
@@ -619,6 +633,7 @@ namespace NoCableLauncher
             this.singlePlayerGroupBox.ResumeLayout(false);
             this.singlePlayerGroupBox.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -662,13 +677,14 @@ namespace NoCableLauncher
         private PictureBox refreshPictureBox2;
         private Button aboutButton;
         private Button infoButton1;
-        private Label label11;
+        private Label spFakeMultiplayerLabel;
         private RadioButton spDisableEnableRadioButton;
-        private RadioButton spFakeMultiaplyerButton;
+        private RadioButton spFakeMultiplayerRadioButton;
         private Button infoButton2;
         private Label label10;
-        private Label label13;
+        private Label spDisableEnableLabel;
         private GroupBox singlePlayerGroupBox;
         private Label label14;
+        private Label label11;
     }
 }
