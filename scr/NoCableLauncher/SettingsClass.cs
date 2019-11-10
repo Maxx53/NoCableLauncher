@@ -248,6 +248,23 @@ namespace NoCableLauncher
                     this["manualDev2"] = value;
                 }
             }
+
+            [SettingsProvider(typeof(PortableSettingsProvider))]
+            [UserScopedSetting]
+            [DebuggerNonUserCode]
+            [DefaultSettingValue("0")]
+            public int SingleplayerMode
+            {
+                get
+                {
+                    return ((int)(this["SingleplayerMode"]));
+                }
+                set
+                {
+                    this["SingleplayerMode"] = value;
+                }
+            }
+
         }
     }
 }

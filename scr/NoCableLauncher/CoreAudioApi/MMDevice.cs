@@ -93,9 +93,24 @@ namespace NoCableLauncher.CoreAudioApi
             }
         }
 
+        public NoCableLauncher.CoreAudioApi.EDeviceState DeviceState
+        {
+            get
+            {
+                NoCableLauncher.CoreAudioApi.EDeviceState Result;
+                Marshal.ThrowExceptionForHR(_RealDevice.GetState(out Result));
+                return Result;
+            }
+        }
+
         internal MMDevice(IMMDevice realDevice)
         {
             _RealDevice = realDevice;
+        }
+
+        public IMMDevice GetRealDevice()
+        {
+            return _RealDevice;
         }
     }
 }

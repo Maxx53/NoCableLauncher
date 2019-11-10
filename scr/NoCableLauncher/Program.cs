@@ -6,6 +6,7 @@ using System.Linq;
 using System.Management;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using NoCableLauncher.CoreAudioApi;
 
@@ -22,7 +23,7 @@ namespace NoCableLauncher
           byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesWritten);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, 
+        static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress,
           byte[] lpBuffer, int nSize, ref int lpNumberOfBytesRead);
 
         [DllImport("kernel32", CharSet = CharSet.Auto, SetLastError = true)]
@@ -30,7 +31,6 @@ namespace NoCableLauncher
         bool CloseHandle(IntPtr hHandle);
 
         public static SettingsClass.Settings settings = SettingsClass.Settings.Default;
-        private static PolicyConfigClient pPolicyConfig = new PolicyConfigClient();
 
         public const string steamName = "steam://rungameid/221680";
         private const string exeName = "Rocksmith2014";
@@ -60,20 +60,8 @@ namespace NoCableLauncher
             public int Size;
         }
 
-
-        private static bool stopWait;
-        private static bool gameRunning;
-
-
-        public static void SetDeviceState(string guid, bool enabled = false)
-        {
-            if (guid != string.Empty)
-            {
-                pPolicyConfig.SetEndpointVisibility(guid, enabled);
-            }
-            else
-                ExitWithError("Player2 Input device is not set!");
-        }
+        private static bool stopWait = false;
+        private static bool gameRunning = false;
 
         public static int FromHex(string value)
         {
@@ -140,8 +128,16 @@ namespace NoCableLauncher
                 }
                 else
                 {
-                    vid = GetDevId(settings.VID2);
-                    pid = GetDevId(settings.PID2);
+                    if (settings.Multiplayer)
+                    {
+                        vid = GetDevId(settings.VID2);
+                        pid = GetDevId(settings.PID2);
+                    }
+                    else
+                    {
+                        // Dummy values to prevent the duplicated Rocksmith "real-cables" message
+                        vid = pid = new byte[] { 0x01, 0x00 };
+                    }
                 }
             }
             catch (Exception exc)
@@ -154,7 +150,7 @@ namespace NoCableLauncher
         {
             try
             {
-                //Getting RAM offsets
+                // Getting RAM offsets
                 offsetVID = new IntPtr(FromHex(settings.offsetVID));
                 offsetPID = new IntPtr(FromHex(settings.offsetPID));
             }
@@ -166,8 +162,8 @@ namespace NoCableLauncher
 
         private static void StartGame()
         {
-            //Can't hook process at this moment
-            //We have to wait while game starts
+            // Can't hook process at this moment
+            // We have to wait while game starts
             if (!settings.isSteam)
             {
                 if (File.Exists(settings.gamePath))
@@ -191,28 +187,38 @@ namespace NoCableLauncher
                 Process.Start(steamName);
         }
 
+        //asd
 
         private static void HookProcess()
         {
-            //Waiting 60 seconds, while game starts
+            // Waiting 60 seconds, while game starts
             for (int i = 0; i < 60; i++)
             {
-                //Delay hotfix
+                // Delay hotfix
                 Thread.Sleep(3000);
 
-                //Finding game process
+                // Finding game process
                 Process[] processes = Process.GetProcessesByName(exeName);
 
                 if (processes.Length <= 0) continue;
 
-                //If game process found
+                // If game process found
 
                 var process = processes[0];
 
-                //Open process for writing
+                // Open process for writing
                 procInfo.Handle = OpenProcess(PROCESS_ALL_ACCESS, false, process.Id);
-                procInfo.StartAddress = process.Modules[0].BaseAddress;
-                procInfo.Size = process.Modules[0].ModuleMemorySize;
+
+                try
+                {
+                    procInfo.StartAddress = process.Modules[0].BaseAddress;
+                    procInfo.Size = process.Modules[0].ModuleMemorySize;
+                }
+                catch (Exception)
+                {
+                    continue;
+                }
+
 
                 if (!settings.Multiplayer) return;
 
@@ -253,12 +259,12 @@ namespace NoCableLauncher
                 int bytesread = 0;
                 int counter = 0;
 
-                //Reading exe bytes to buffer
+                // Reading exe bytes to buffer
                 ReadProcessMemory(procInfo.Handle, procInfo.StartAddress, buffer, procInfo.Size, ref bytesread);
 
                 if (pattern.Length <= buffer.Length)
                 {
-                    //Finding values by pattern
+                    // Finding values by pattern
                     for (int i = 0; i < buffer.Length; i++)
                     {
                         if (buffer[i] == pattern[0])
@@ -276,7 +282,7 @@ namespace NoCableLauncher
                                         offsetVID = result;
                                         offsetPID = result + (pattern.Length - 2);
 
-                                        //Saving new offsets to settings
+                                        // Saving new offsets to settings
                                         settings.offsetVID = offsetVID.ToString("X8");
                                         settings.offsetPID = offsetPID.ToString("X8");
                                         settings.Save();
@@ -325,81 +331,168 @@ namespace NoCableLauncher
             stopWait = true;
         }
 
+        private static bool RequiresCaptureDeviceReenable = false;
+
+        // Disables all recording devices except for the one used in-game
+        private static void FixRecordingDevices()
+        {
+            stopWait = false;
+
+            Common.LoadDeviceList();
+
+            if (Common.devices.Count > 1)
+            {
+                RequiresCaptureDeviceReenable = true;
+                Common.DisableAllCaptureDevicesExcept(settings.GUID1);
+            }
+        }
+
+        private const string SettingsFileBat = "EditSettings.bat";
+
         [STAThread]
         public static void Main(string[] args)
         {
+            if(System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1)
+            {
+                MessageBox.Show("NoCableLauncher is already running.");
+                Application.Exit();
+            }
+
+            bool isOpenSettings = false;
+
             if (args.Length != 0)
             {
                 if (args[0] == "-set")
-                {
-                    //Open settings window
-                    Application.EnableVisualStyles();
-                    Application.Run(new Settings());
-                }    
+                    isOpenSettings = true;
             }
-            else
-            {
-                if (settings.Multiplayer && IsDeviceUsbAndConnected(settings.PID, settings.VID))
-                {
-                    //Disable player2 record device
-                    SetDeviceState(settings.GUID2);
 
-                    //Register hotkey and press event
+            // First of all, check if the bat file exists, if not, create it
+            if (!File.Exists(SettingsFileBat))
+            {
+                File.WriteAllText(SettingsFileBat, "start " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Name + ".exe -set");
+
+                // And since there was no Bat file we assume this is the first we are running the program, so let's open the settings directly
+                isOpenSettings = true;
+            }
+
+            bool isOpenGame = true;
+
+            if (isOpenSettings)
+            {
+                // Open settings window
+                Application.EnableVisualStyles();
+                Settings settings = new Settings();
+                Application.Run(settings);
+
+                isOpenGame = settings.OpenGameOnClose;
+            }
+
+            if (isOpenGame)
+            {
+                // Hotfix to allow us to use all Recording devices when not in Multiplayer mode
+                if (!settings.Multiplayer)
+                {
+                    FixRecordingDevices();
+
+                    if (Program.settings.SingleplayerMode == 1)
+                    {
+                        // Register hotkey and press event
+                        InitHotKey();
+                    }
+                }
+                else if (IsDeviceUsbAndConnected(settings.PID, settings.VID))
+                {
+                    // Disable player2 record device
+                    if (!Common.SetDeviceState(settings.GUID2))
+                        ExitWithError("Player2 Input device is not set!");
+
+                    // Register hotkey and press event
                     InitHotKey();
                 }
 
-                //Reading Offsets
+                // Reading Offsets
                 ReadOffsetValues();
 
-                //Reading PID&VID values for Player1
+                // Reading PID&VID values for Player1
                 ReadDeviceValues(false);
 
-                //Launching Rocksmith 2014
+                // Launching Rocksmith 2014
                 StartGame();
 
-                //Getting process id and setting exit event
+                // Getting process id and setting exit event
                 HookProcess();
 
-                //Checking offsets to write
+                // Checking offsets to write
                 if (CheckOffsets() == false)
                 {
                     if (settings.manualOffsets)
                         ExitWithError("Offsets values are wrong! Set proper values manually in settings or uncheck \"Manual Offsets\" to find it automatically.");
                     else
-                        //Find offsets automatically
+                        // Find offsets automatically
                         FindOffsets();
                 }
 
-                //Patching game
+                // Patching game
                 Patch();
 
+                // If game still running
                 if (settings.Multiplayer)
                 {
-                    //Waiting for hotkey
+                    // Waiting for hotkey
                     while (!stopWait)
-                    {
                         Thread.Sleep(100);
-                    }
 
-                    //If game still running
                     if (gameRunning)
                     {
-                        //Reading PID&VID values for Player2
+                        // Reading PID&VID values for Player2
                         ReadDeviceValues(true);
 
-                        //Patching game for multiplayer
+                        // Patching game for multiplayer
                         Patch();
+
+                        // Enable player2 record device
+                        if (!Common.SetDeviceState(settings.GUID2, true))
+                            ExitWithError("Player2 Input device is not set!");
                     }
 
-                    //Enable player2 record device
-                    SetDeviceState(settings.GUID2, true);
-
-                    //Free hotkey
+                    // Free hotkey
                     HotKeyManager.UnregisterHotKey(hotkeyID);
                 }
+                else // !settings.Multiplayer
+                {
+                    if(Program.settings.SingleplayerMode == 1)
+                    {
+                        // Wait for the CTRL-M hotkey to be pressed so we can prevent device detection and re-enable the disabled devices
+                        while (!stopWait)
+                            Thread.Sleep(100);
 
-                //Closing game handle
+                        // TODO: Disable game device detection
+
+
+                        // Free hotkey
+                        HotKeyManager.UnregisterHotKey(hotkeyID);
+                    }
+                }
+
+                // Closing game handle
                 CloseHandle(procInfo.Handle);
+
+                if (!settings.Multiplayer)
+                {
+                    if (Program.settings.SingleplayerMode == 0)
+                    {
+                        // Wait for the game to close so we can re-enable the disabled devices
+                        while (true)
+                        {
+                            Process[] processes = Process.GetProcessesByName(exeName);
+                            if (processes.Length <= 0) break;
+                            Thread.Sleep(1000);
+                        }
+                    }
+
+                    if (RequiresCaptureDeviceReenable)
+                        Common.ReEnableCaptureDevices();
+                }
             }
         }
     }
