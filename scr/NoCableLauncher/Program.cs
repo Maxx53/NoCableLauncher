@@ -30,7 +30,6 @@ namespace NoCableLauncher
         public static extern
         bool CloseHandle(IntPtr hHandle);
 
-        public static SettingsClass.Settings settings = SettingsClass.Settings.Default;
 
         public const string steamName = "steam://rungameid/221680";
         private const string exeName = "Rocksmith2014";
@@ -106,7 +105,7 @@ namespace NoCableLauncher
         }
         private static bool IsDeviceUsbAndConnected(string pid, string vid)
         {
-            return ((settings.VID.All(number => number == 0) && settings.PID.All(number => number == 0)) || IsUsbDeviceConnected(settings.PID, settings.VID));
+            return ((Common.settings.VID.All(number => number == 0) && Common.settings.PID.All(number => number == 0)) || IsUsbDeviceConnected(Common.settings.PID, Common.settings.VID));
         }
 
         private static void ExitWithError(string value)
@@ -121,17 +120,17 @@ namespace NoCableLauncher
         {
             try
             {
-                if (IsDeviceUsbAndConnected(settings.PID, settings.VID) && !multiplayer)
+                if (IsDeviceUsbAndConnected(Common.settings.PID, Common.settings.VID) && !multiplayer)
                 {
-                    vid = GetDevId(settings.VID);
-                    pid = GetDevId(settings.PID);
+                    vid = GetDevId(Common.settings.VID);
+                    pid = GetDevId(Common.settings.PID);
                 }
                 else
                 {
-                    if (settings.Multiplayer)
+                    if (Common.settings.Multiplayer)
                     {
-                        vid = GetDevId(settings.VID2);
-                        pid = GetDevId(settings.PID2);
+                        vid = GetDevId(Common.settings.VID2);
+                        pid = GetDevId(Common.settings.PID2);
                     }
                     else
                     {
@@ -151,8 +150,8 @@ namespace NoCableLauncher
             try
             {
                 // Getting RAM offsets
-                offsetVID = new IntPtr(FromHex(settings.offsetVID));
-                offsetPID = new IntPtr(FromHex(settings.offsetPID));
+                offsetVID = new IntPtr(FromHex(Common.settings.offsetVID));
+                offsetPID = new IntPtr(FromHex(Common.settings.offsetPID));
             }
             catch (Exception exc)
             {
@@ -164,21 +163,21 @@ namespace NoCableLauncher
         {
             // Can't hook process at this moment
             // We have to wait while game starts
-            if (!settings.isSteam)
+            if (!Common.settings.isSteam)
             {
-                if (File.Exists(settings.gamePath))
+                if (File.Exists(Common.settings.gamePath))
                 {
                     var startInfo = new ProcessStartInfo
                     {
-                        FileName = Path.GetFileNameWithoutExtension(settings.gamePath),
-                        WorkingDirectory = Path.GetDirectoryName(settings.gamePath)
+                        FileName = Path.GetFileNameWithoutExtension(Common.settings.gamePath),
+                        WorkingDirectory = Path.GetDirectoryName(Common.settings.gamePath)
                     };
 
                     Process.Start(startInfo);
                 }
                 else
                 {
-                    ExitWithError($"Exe file at \"{settings.gamePath}\" not found, check game path setting.");
+                    ExitWithError($"Exe file at \"{Common.settings.gamePath}\" not found, check game path setting.");
                 }
             }
             else
@@ -220,7 +219,7 @@ namespace NoCableLauncher
                 }
 
 
-                if (!settings.Multiplayer) return;
+                if (!Common.settings.Multiplayer) return;
 
                 process.EnableRaisingEvents = true;
                 process.Exited += process_Exited;
@@ -283,9 +282,9 @@ namespace NoCableLauncher
                                         offsetPID = result + (pattern.Length - 2);
 
                                         // Saving new offsets to settings
-                                        settings.offsetVID = offsetVID.ToString("X8");
-                                        settings.offsetPID = offsetPID.ToString("X8");
-                                        settings.Save();
+                                        Common.settings.offsetVID = offsetVID.ToString("X8");
+                                        Common.settings.offsetPID = offsetPID.ToString("X8");
+                                        Common.settings.Save();
 
                                         return;
                                     }
@@ -343,7 +342,7 @@ namespace NoCableLauncher
             if (Common.devices.Count > 1)
             {
                 RequiresCaptureDeviceReenable = true;
-                Common.DisableAllCaptureDevicesExcept(settings.GUID1);
+                Common.DisableAllCaptureDevicesExcept(Common.settings.GUID1);
             }
         }
 
@@ -390,14 +389,14 @@ namespace NoCableLauncher
             if (isOpenGame)
             {
                 // Hotfix to allow us to use all Recording devices when not in Multiplayer mode
-                if (!settings.Multiplayer)
+                if (!Common.settings.Multiplayer)
                 {
                     FixRecordingDevices();
                 }
-                else if (IsDeviceUsbAndConnected(settings.PID, settings.VID))
+                else if (IsDeviceUsbAndConnected(Common.settings.PID, Common.settings.VID))
                 {
                     // Disable player2 record device
-                    if (!Common.SetDeviceState(settings.GUID2))
+                    if (!Common.SetDeviceState(Common.settings.GUID2))
                         ExitWithError("Player2 Input device is not set!");
 
                     // Register hotkey and press event
@@ -419,7 +418,7 @@ namespace NoCableLauncher
                 // Checking offsets to write
                 if (CheckOffsets() == false)
                 {
-                    if (settings.manualOffsets)
+                    if (Common.settings.manualOffsets)
                         ExitWithError("Offsets values are wrong! Set proper values manually in settings or uncheck \"Manual Offsets\" to find it automatically.");
                     else
                         // Find offsets automatically
@@ -430,7 +429,7 @@ namespace NoCableLauncher
                 Patch();
 
                 // If game still running
-                if (settings.Multiplayer)
+                if (Common.settings.Multiplayer)
                 {
                     // Waiting for hotkey
                     while (!stopWait)
@@ -445,16 +444,16 @@ namespace NoCableLauncher
                         Patch();
 
                         // Enable player2 record device
-                        if (!Common.SetDeviceState(settings.GUID2, true))
+                        if (!Common.SetDeviceState(Common.settings.GUID2, true))
                             ExitWithError("Player2 Input device is not set!");
                     }
 
                     // Free hotkey
                     HotKeyManager.UnregisterHotKey(hotkeyID);
                 }
-                else // !settings.Multiplayer
+                else // !Common.settings.Multiplayer
                 {
-                    if (Program.settings.SingleplayerMode == 0)
+                    if (Common.settings.SingleplayerMode == 0)
                     {
                         bool okPressed = false;
 
@@ -493,9 +492,9 @@ namespace NoCableLauncher
                 // Closing game handle
                 CloseHandle(procInfo.Handle);
 
-                if (!settings.Multiplayer)
+                if (!Common.settings.Multiplayer)
                 {
-                    if (Program.settings.SingleplayerMode == 1)
+                    if (Common.settings.SingleplayerMode == 1)
                     {
                         // Wait for the game to close so we can re-enable the disabled devices
                         while (true)
