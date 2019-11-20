@@ -1,11 +1,14 @@
-﻿namespace NoCableLauncher
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace NoCableLauncher
 {
     partial class Settings
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -28,6 +31,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Settings));
             this.label1 = new System.Windows.Forms.Label();
             this.pathTextBox = new System.Windows.Forms.TextBox();
             this.steamCheckBox = new System.Windows.Forms.CheckBox();
@@ -39,18 +43,21 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.p1manualCheckBox = new System.Windows.Forms.CheckBox();
-            this.okButton = new System.Windows.Forms.Button();
+            this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
-            this.offcetVidTextBox = new System.Windows.Forms.TextBox();
-            this.offcetPidTextBox = new System.Windows.Forms.TextBox();
+            this.offsetVidTextBox = new System.Windows.Forms.TextBox();
+            this.offsetPidTextBox = new System.Windows.Forms.TextBox();
             this.player1GroupBox = new System.Windows.Forms.GroupBox();
+            this.refreshPictureBox1 = new System.Windows.Forms.PictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.manualOffsetsCheckbox = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
             this.multiplayerCheckBox = new System.Windows.Forms.CheckBox();
             this.inputDevButton = new System.Windows.Forms.Button();
             this.player2GroupBox = new System.Windows.Forms.GroupBox();
+            this.refreshPictureBox2 = new System.Windows.Forms.PictureBox();
             this.label12 = new System.Windows.Forms.Label();
             this.p2manualCheckBox = new System.Windows.Forms.CheckBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -59,16 +66,32 @@
             this.p2DeviceCombo = new System.Windows.Forms.ComboBox();
             this.p2pidTexBox = new System.Windows.Forms.TextBox();
             this.p2vidTextBox = new System.Windows.Forms.TextBox();
-            this.manualOffcetsCheckbox = new System.Windows.Forms.CheckBox();
+            this.launchGameButton = new System.Windows.Forms.Button();
+            this.spOnBoardGroupBox = new System.Windows.Forms.GroupBox();
+            this.spDisableEnableRadioButton = new System.Windows.Forms.RadioButton();
+            this.spFakeMultiplayerRadioButton = new System.Windows.Forms.RadioButton();
+            this.infoButton2 = new System.Windows.Forms.Button();
+            this.infoButton1 = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
+            this.spDisableEnableLabel = new System.Windows.Forms.Label();
+            this.spFakeMultiplayerLabel = new System.Windows.Forms.Label();
+            this.aboutButton = new System.Windows.Forms.Button();
+            this.singlePlayerGroupBox = new System.Windows.Forms.GroupBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
             this.player1GroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.refreshPictureBox1)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.player2GroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.refreshPictureBox2)).BeginInit();
+            this.spOnBoardGroupBox.SuspendLayout();
+            this.singlePlayerGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(44, 26);
+            this.label1.Location = new System.Drawing.Point(44, 25);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(29, 13);
             this.label1.TabIndex = 0;
@@ -76,15 +99,16 @@
             // 
             // pathTextBox
             // 
-            this.pathTextBox.Location = new System.Drawing.Point(79, 23);
+            this.pathTextBox.Location = new System.Drawing.Point(79, 22);
             this.pathTextBox.Name = "pathTextBox";
             this.pathTextBox.Size = new System.Drawing.Size(233, 20);
             this.pathTextBox.TabIndex = 1;
+            this.pathTextBox.TextChanged += new System.EventHandler(this._SettingsChanged);
             // 
             // steamCheckBox
             // 
             this.steamCheckBox.AutoSize = true;
-            this.steamCheckBox.Location = new System.Drawing.Point(79, 49);
+            this.steamCheckBox.Location = new System.Drawing.Point(79, 48);
             this.steamCheckBox.Name = "steamCheckBox";
             this.steamCheckBox.Size = new System.Drawing.Size(87, 17);
             this.steamCheckBox.TabIndex = 3;
@@ -94,7 +118,7 @@
             // 
             // browseButton
             // 
-            this.browseButton.Location = new System.Drawing.Point(318, 23);
+            this.browseButton.Location = new System.Drawing.Point(318, 22);
             this.browseButton.Name = "browseButton";
             this.browseButton.Size = new System.Drawing.Size(26, 20);
             this.browseButton.TabIndex = 2;
@@ -105,17 +129,17 @@
             // p1DeviceCombo
             // 
             this.p1DeviceCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.p1DeviceCombo.Location = new System.Drawing.Point(80, 24);
+            this.p1DeviceCombo.Location = new System.Drawing.Point(67, 23);
             this.p1DeviceCombo.Name = "p1DeviceCombo";
-            this.p1DeviceCombo.Size = new System.Drawing.Size(264, 21);
+            this.p1DeviceCombo.Size = new System.Drawing.Size(243, 21);
             this.p1DeviceCombo.TabIndex = 8;
-            this.p1DeviceCombo.DropDown += new System.EventHandler(this.p1DeviceCombo_DropDown);
+            this.p1DeviceCombo.SelectedIndexChanged += new System.EventHandler(this._SettingsChanged);
             this.p1DeviceCombo.SelectionChangeCommitted += new System.EventHandler(this.p1DeviceCombo_SelectionChangeCommitted);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(33, 27);
+            this.label2.Location = new System.Drawing.Point(20, 26);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(41, 13);
             this.label2.TabIndex = 0;
@@ -123,24 +147,26 @@
             // 
             // p1vidTextBox
             // 
-            this.p1vidTextBox.Location = new System.Drawing.Point(80, 72);
+            this.p1vidTextBox.Location = new System.Drawing.Point(67, 71);
             this.p1vidTextBox.MaxLength = 4;
             this.p1vidTextBox.Name = "p1vidTextBox";
             this.p1vidTextBox.Size = new System.Drawing.Size(88, 20);
             this.p1vidTextBox.TabIndex = 10;
+            this.p1vidTextBox.TextChanged += new System.EventHandler(this.p1vidTextBox_TextChanged);
             // 
             // p1pidTexBox
             // 
-            this.p1pidTexBox.Location = new System.Drawing.Point(80, 98);
+            this.p1pidTexBox.Location = new System.Drawing.Point(67, 97);
             this.p1pidTexBox.MaxLength = 4;
             this.p1pidTexBox.Name = "p1pidTexBox";
             this.p1pidTexBox.Size = new System.Drawing.Size(88, 20);
             this.p1pidTexBox.TabIndex = 11;
+            this.p1pidTexBox.TextChanged += new System.EventHandler(this.p1pidTexBox_TextChanged);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(49, 75);
+            this.label3.Location = new System.Drawing.Point(36, 74);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(25, 13);
             this.label3.TabIndex = 0;
@@ -149,7 +175,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(49, 101);
+            this.label4.Location = new System.Drawing.Point(36, 100);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(25, 13);
             this.label4.TabIndex = 0;
@@ -158,7 +184,7 @@
             // p1manualCheckBox
             // 
             this.p1manualCheckBox.AutoSize = true;
-            this.p1manualCheckBox.Location = new System.Drawing.Point(80, 51);
+            this.p1manualCheckBox.Location = new System.Drawing.Point(67, 50);
             this.p1manualCheckBox.Name = "p1manualCheckBox";
             this.p1manualCheckBox.Size = new System.Drawing.Size(96, 17);
             this.p1manualCheckBox.TabIndex = 9;
@@ -166,51 +192,58 @@
             this.p1manualCheckBox.UseVisualStyleBackColor = true;
             this.p1manualCheckBox.CheckedChanged += new System.EventHandler(this.p1manualCheckBox_CheckedChanged);
             // 
-            // okButton
+            // saveButton
             // 
-            this.okButton.Location = new System.Drawing.Point(207, 430);
-            this.okButton.Name = "okButton";
-            this.okButton.Size = new System.Drawing.Size(77, 24);
-            this.okButton.TabIndex = 17;
-            this.okButton.Text = "Save";
-            this.okButton.UseVisualStyleBackColor = true;
-            this.okButton.Click += new System.EventHandler(this.okButton_Click);
+            this.saveButton.BackColor = System.Drawing.Color.DimGray;
+            this.saveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.saveButton.Location = new System.Drawing.Point(299, 430);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(67, 24);
+            this.saveButton.TabIndex = 17;
+            this.saveButton.Text = "Save";
+            this.saveButton.UseVisualStyleBackColor = false;
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(290, 430);
+            this.cancelButton.BackColor = System.Drawing.Color.DimGray;
+            this.cancelButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cancelButton.Location = new System.Drawing.Point(299, 459);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(77, 24);
+            this.cancelButton.Size = new System.Drawing.Size(67, 24);
             this.cancelButton.TabIndex = 18;
-            this.cancelButton.Text = "Cancel";
-            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Text = "Close";
+            this.cancelButton.UseVisualStyleBackColor = false;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(17, 95);
+            this.label5.Location = new System.Drawing.Point(17, 94);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(57, 13);
+            this.label5.Size = new System.Drawing.Size(56, 13);
             this.label5.TabIndex = 0;
-            this.label5.Text = "VID Offcet";
+            this.label5.Text = "VID Offset";
             // 
-            // offcetVidTextBox
+            // offsetVidTextBox
             // 
-            this.offcetVidTextBox.Location = new System.Drawing.Point(79, 95);
-            this.offcetVidTextBox.Name = "offcetVidTextBox";
-            this.offcetVidTextBox.Size = new System.Drawing.Size(86, 20);
-            this.offcetVidTextBox.TabIndex = 5;
+            this.offsetVidTextBox.Location = new System.Drawing.Point(79, 94);
+            this.offsetVidTextBox.Name = "offsetVidTextBox";
+            this.offsetVidTextBox.Size = new System.Drawing.Size(86, 20);
+            this.offsetVidTextBox.TabIndex = 5;
+            this.offsetVidTextBox.TextChanged += new System.EventHandler(this._SettingsChanged);
             // 
-            // offcetPidTextBox
+            // offsetPidTextBox
             // 
-            this.offcetPidTextBox.Location = new System.Drawing.Point(79, 120);
-            this.offcetPidTextBox.Name = "offcetPidTextBox";
-            this.offcetPidTextBox.Size = new System.Drawing.Size(86, 20);
-            this.offcetPidTextBox.TabIndex = 6;
+            this.offsetPidTextBox.Location = new System.Drawing.Point(79, 119);
+            this.offsetPidTextBox.Name = "offsetPidTextBox";
+            this.offsetPidTextBox.Size = new System.Drawing.Size(86, 20);
+            this.offsetPidTextBox.TabIndex = 6;
+            this.offsetPidTextBox.TextChanged += new System.EventHandler(this._SettingsChanged);
             // 
             // player1GroupBox
             // 
+            this.player1GroupBox.Controls.Add(this.refreshPictureBox1);
             this.player1GroupBox.Controls.Add(this.p1manualCheckBox);
             this.player1GroupBox.Controls.Add(this.label3);
             this.player1GroupBox.Controls.Add(this.label4);
@@ -218,12 +251,25 @@
             this.player1GroupBox.Controls.Add(this.p1DeviceCombo);
             this.player1GroupBox.Controls.Add(this.p1pidTexBox);
             this.player1GroupBox.Controls.Add(this.p1vidTextBox);
+            this.player1GroupBox.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.player1GroupBox.Location = new System.Drawing.Point(12, 162);
             this.player1GroupBox.Name = "player1GroupBox";
             this.player1GroupBox.Size = new System.Drawing.Size(354, 127);
             this.player1GroupBox.TabIndex = 8;
             this.player1GroupBox.TabStop = false;
             this.player1GroupBox.Text = "Player1 Audio Device";
+            // 
+            // refreshPictureBox1
+            // 
+            this.refreshPictureBox1.BackgroundImage = global::NoCableLauncher.Properties.Resources.refresh;
+            this.refreshPictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.refreshPictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.refreshPictureBox1.Location = new System.Drawing.Point(313, 22);
+            this.refreshPictureBox1.Name = "refreshPictureBox1";
+            this.refreshPictureBox1.Size = new System.Drawing.Size(24, 24);
+            this.refreshPictureBox1.TabIndex = 16;
+            this.refreshPictureBox1.TabStop = false;
+            this.refreshPictureBox1.Click += new System.EventHandler(this.refreshPictureBox1_Click);
             // 
             // openFileDialog1
             // 
@@ -232,16 +278,17 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.manualOffcetsCheckbox);
+            this.groupBox2.Controls.Add(this.manualOffsetsCheckbox);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.pathTextBox);
             this.groupBox2.Controls.Add(this.browseButton);
             this.groupBox2.Controls.Add(this.multiplayerCheckBox);
-            this.groupBox2.Controls.Add(this.offcetVidTextBox);
+            this.groupBox2.Controls.Add(this.offsetVidTextBox);
             this.groupBox2.Controls.Add(this.steamCheckBox);
-            this.groupBox2.Controls.Add(this.offcetPidTextBox);
+            this.groupBox2.Controls.Add(this.offsetPidTextBox);
+            this.groupBox2.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.groupBox2.Location = new System.Drawing.Point(12, 5);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(354, 151);
@@ -249,19 +296,30 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Game";
             // 
+            // manualOffsetsCheckbox
+            // 
+            this.manualOffsetsCheckbox.AutoSize = true;
+            this.manualOffsetsCheckbox.Location = new System.Drawing.Point(79, 71);
+            this.manualOffsetsCheckbox.Name = "manualOffsetsCheckbox";
+            this.manualOffsetsCheckbox.Size = new System.Drawing.Size(97, 17);
+            this.manualOffsetsCheckbox.TabIndex = 8;
+            this.manualOffsetsCheckbox.Text = "Manual Offsets";
+            this.manualOffsetsCheckbox.UseVisualStyleBackColor = true;
+            this.manualOffsetsCheckbox.CheckedChanged += new System.EventHandler(this.manualOffsetsCheckbox_CheckedChanged);
+            // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(16, 123);
+            this.label6.Location = new System.Drawing.Point(16, 122);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(57, 13);
+            this.label6.Size = new System.Drawing.Size(56, 13);
             this.label6.TabIndex = 0;
-            this.label6.Text = "PID Offcet";
+            this.label6.Text = "PID Offset";
             // 
             // multiplayerCheckBox
             // 
             this.multiplayerCheckBox.AutoSize = true;
-            this.multiplayerCheckBox.Location = new System.Drawing.Point(195, 49);
+            this.multiplayerCheckBox.Location = new System.Drawing.Point(195, 48);
             this.multiplayerCheckBox.Name = "multiplayerCheckBox";
             this.multiplayerCheckBox.Size = new System.Drawing.Size(112, 17);
             this.multiplayerCheckBox.TabIndex = 4;
@@ -271,16 +329,19 @@
             // 
             // inputDevButton
             // 
-            this.inputDevButton.Location = new System.Drawing.Point(13, 431);
+            this.inputDevButton.BackColor = System.Drawing.Color.DimGray;
+            this.inputDevButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.inputDevButton.Location = new System.Drawing.Point(12, 431);
             this.inputDevButton.Name = "inputDevButton";
             this.inputDevButton.Size = new System.Drawing.Size(114, 23);
             this.inputDevButton.TabIndex = 16;
             this.inputDevButton.Text = "Input Devices";
-            this.inputDevButton.UseVisualStyleBackColor = true;
+            this.inputDevButton.UseVisualStyleBackColor = false;
             this.inputDevButton.Click += new System.EventHandler(this.inputDevButton_Click);
             // 
             // player2GroupBox
             // 
+            this.player2GroupBox.Controls.Add(this.refreshPictureBox2);
             this.player2GroupBox.Controls.Add(this.label12);
             this.player2GroupBox.Controls.Add(this.p2manualCheckBox);
             this.player2GroupBox.Controls.Add(this.label7);
@@ -289,6 +350,7 @@
             this.player2GroupBox.Controls.Add(this.p2DeviceCombo);
             this.player2GroupBox.Controls.Add(this.p2pidTexBox);
             this.player2GroupBox.Controls.Add(this.p2vidTextBox);
+            this.player2GroupBox.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.player2GroupBox.Location = new System.Drawing.Point(12, 295);
             this.player2GroupBox.Name = "player2GroupBox";
             this.player2GroupBox.Size = new System.Drawing.Size(355, 128);
@@ -296,10 +358,22 @@
             this.player2GroupBox.TabStop = false;
             this.player2GroupBox.Text = "Player2 Audio Device";
             // 
+            // refreshPictureBox2
+            // 
+            this.refreshPictureBox2.BackgroundImage = global::NoCableLauncher.Properties.Resources.refresh;
+            this.refreshPictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.refreshPictureBox2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.refreshPictureBox2.Location = new System.Drawing.Point(313, 22);
+            this.refreshPictureBox2.Name = "refreshPictureBox2";
+            this.refreshPictureBox2.Size = new System.Drawing.Size(24, 24);
+            this.refreshPictureBox2.TabIndex = 15;
+            this.refreshPictureBox2.TabStop = false;
+            this.refreshPictureBox2.Click += new System.EventHandler(this.refreshPictureBox1_Click);
+            // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(202, 53);
+            this.label12.Location = new System.Drawing.Point(192, 67);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(140, 39);
             this.label12.TabIndex = 6;
@@ -308,7 +382,7 @@
             // p2manualCheckBox
             // 
             this.p2manualCheckBox.AutoSize = true;
-            this.p2manualCheckBox.Location = new System.Drawing.Point(80, 51);
+            this.p2manualCheckBox.Location = new System.Drawing.Point(67, 50);
             this.p2manualCheckBox.Name = "p2manualCheckBox";
             this.p2manualCheckBox.Size = new System.Drawing.Size(96, 17);
             this.p2manualCheckBox.TabIndex = 13;
@@ -319,7 +393,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(49, 75);
+            this.label7.Location = new System.Drawing.Point(36, 74);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(25, 13);
             this.label7.TabIndex = 0;
@@ -328,7 +402,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(49, 101);
+            this.label8.Location = new System.Drawing.Point(36, 100);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(25, 13);
             this.label8.TabIndex = 0;
@@ -337,7 +411,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(32, 27);
+            this.label9.Location = new System.Drawing.Point(19, 26);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(41, 13);
             this.label9.TabIndex = 0;
@@ -346,52 +420,199 @@
             // p2DeviceCombo
             // 
             this.p2DeviceCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.p2DeviceCombo.Location = new System.Drawing.Point(80, 24);
+            this.p2DeviceCombo.Location = new System.Drawing.Point(67, 23);
             this.p2DeviceCombo.Name = "p2DeviceCombo";
-            this.p2DeviceCombo.Size = new System.Drawing.Size(265, 21);
+            this.p2DeviceCombo.Size = new System.Drawing.Size(243, 21);
             this.p2DeviceCombo.TabIndex = 12;
-            this.p2DeviceCombo.DropDown += new System.EventHandler(this.p1DeviceCombo_DropDown);
+            this.p2DeviceCombo.SelectedIndexChanged += new System.EventHandler(this._SettingsChanged);
             this.p2DeviceCombo.SelectionChangeCommitted += new System.EventHandler(this.p2DeviceCombo_SelectionChangeCommitted);
             // 
             // p2pidTexBox
             // 
-            this.p2pidTexBox.Location = new System.Drawing.Point(80, 98);
+            this.p2pidTexBox.Location = new System.Drawing.Point(67, 97);
             this.p2pidTexBox.MaxLength = 4;
             this.p2pidTexBox.Name = "p2pidTexBox";
             this.p2pidTexBox.Size = new System.Drawing.Size(88, 20);
             this.p2pidTexBox.TabIndex = 14;
+            this.p2pidTexBox.TextChanged += new System.EventHandler(this._SettingsChanged);
             // 
             // p2vidTextBox
             // 
-            this.p2vidTextBox.Location = new System.Drawing.Point(80, 72);
+            this.p2vidTextBox.Location = new System.Drawing.Point(67, 71);
             this.p2vidTextBox.MaxLength = 4;
             this.p2vidTextBox.Name = "p2vidTextBox";
             this.p2vidTextBox.Size = new System.Drawing.Size(88, 20);
             this.p2vidTextBox.TabIndex = 14;
+            this.p2vidTextBox.TextChanged += new System.EventHandler(this._SettingsChanged);
             // 
-            // manualOffcetsCheckbox
+            // launchGameButton
             // 
-            this.manualOffcetsCheckbox.AutoSize = true;
-            this.manualOffcetsCheckbox.Location = new System.Drawing.Point(79, 72);
-            this.manualOffcetsCheckbox.Name = "manualOffcetsCheckbox";
-            this.manualOffcetsCheckbox.Size = new System.Drawing.Size(98, 17);
-            this.manualOffcetsCheckbox.TabIndex = 8;
-            this.manualOffcetsCheckbox.Text = "Manual Offcets";
-            this.manualOffcetsCheckbox.UseVisualStyleBackColor = true;
-            this.manualOffcetsCheckbox.CheckedChanged += new System.EventHandler(this.manualOffcetsCheckbox_CheckedChanged);
+            this.launchGameButton.BackColor = System.Drawing.Color.DimGray;
+            this.launchGameButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.launchGameButton.Location = new System.Drawing.Point(12, 460);
+            this.launchGameButton.Name = "launchGameButton";
+            this.launchGameButton.Size = new System.Drawing.Size(114, 23);
+            this.launchGameButton.TabIndex = 19;
+            this.launchGameButton.Text = "Launch Game";
+            this.launchGameButton.UseVisualStyleBackColor = false;
+            this.launchGameButton.Click += new System.EventHandler(this.launchGameButton_Click);
+            // 
+            // spOnBoardGroupBox
+            // 
+            this.spOnBoardGroupBox.Controls.Add(this.spDisableEnableRadioButton);
+            this.spOnBoardGroupBox.Controls.Add(this.spFakeMultiplayerRadioButton);
+            this.spOnBoardGroupBox.Controls.Add(this.infoButton2);
+            this.spOnBoardGroupBox.Controls.Add(this.infoButton1);
+            this.spOnBoardGroupBox.Controls.Add(this.label10);
+            this.spOnBoardGroupBox.Controls.Add(this.spDisableEnableLabel);
+            this.spOnBoardGroupBox.Controls.Add(this.spFakeMultiplayerLabel);
+            this.spOnBoardGroupBox.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.spOnBoardGroupBox.Location = new System.Drawing.Point(12, 295);
+            this.spOnBoardGroupBox.Name = "spOnBoardGroupBox";
+            this.spOnBoardGroupBox.Size = new System.Drawing.Size(355, 128);
+            this.spOnBoardGroupBox.TabIndex = 20;
+            this.spOnBoardGroupBox.TabStop = false;
+            this.spOnBoardGroupBox.Text = "Single Player Mode - Onboard soundcard";
+            this.spOnBoardGroupBox.Visible = false;
+            // 
+            // spDisableEnableRadioButton
+            // 
+            this.spDisableEnableRadioButton.AutoSize = true;
+            this.spDisableEnableRadioButton.Location = new System.Drawing.Point(275, 62);
+            this.spDisableEnableRadioButton.Name = "spDisableEnableRadioButton";
+            this.spDisableEnableRadioButton.Size = new System.Drawing.Size(14, 13);
+            this.spDisableEnableRadioButton.TabIndex = 22;
+            this.spDisableEnableRadioButton.UseVisualStyleBackColor = true;
+            this.spDisableEnableRadioButton.CheckedChanged += new System.EventHandler(this.spRadioButton_CheckedChanged);
+            // 
+            // spFakeMultiplayerRadioButton
+            // 
+            this.spFakeMultiplayerRadioButton.AutoSize = true;
+            this.spFakeMultiplayerRadioButton.Checked = true;
+            this.spFakeMultiplayerRadioButton.Location = new System.Drawing.Point(275, 86);
+            this.spFakeMultiplayerRadioButton.Name = "spFakeMultiplayerRadioButton";
+            this.spFakeMultiplayerRadioButton.Size = new System.Drawing.Size(14, 13);
+            this.spFakeMultiplayerRadioButton.TabIndex = 22;
+            this.spFakeMultiplayerRadioButton.TabStop = true;
+            this.spFakeMultiplayerRadioButton.UseVisualStyleBackColor = true;
+            this.spFakeMultiplayerRadioButton.CheckedChanged += new System.EventHandler(this.spRadioButton_CheckedChanged);
+            // 
+            // infoButton2
+            // 
+            this.infoButton2.BackColor = System.Drawing.Color.DimGray;
+            this.infoButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.infoButton2.Location = new System.Drawing.Point(293, 80);
+            this.infoButton2.Name = "infoButton2";
+            this.infoButton2.Size = new System.Drawing.Size(22, 24);
+            this.infoButton2.TabIndex = 21;
+            this.infoButton2.Text = "?";
+            this.infoButton2.UseVisualStyleBackColor = false;
+            this.infoButton2.Click += new System.EventHandler(this.infoButton2_Click);
+            // 
+            // infoButton1
+            // 
+            this.infoButton1.BackColor = System.Drawing.Color.DimGray;
+            this.infoButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.infoButton1.Location = new System.Drawing.Point(293, 56);
+            this.infoButton1.Name = "infoButton1";
+            this.infoButton1.Size = new System.Drawing.Size(22, 24);
+            this.infoButton1.TabIndex = 21;
+            this.infoButton1.Text = "?";
+            this.infoButton1.UseVisualStyleBackColor = false;
+            this.infoButton1.Click += new System.EventHandler(this.infoButton1_Click);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(14, 30);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(277, 13);
+            this.label10.TabIndex = 17;
+            this.label10.Text = "To prevent duplicated Rocksmith controllers choose one:";
+            // 
+            // spDisableEnableLabel
+            // 
+            this.spDisableEnableLabel.AutoSize = true;
+            this.spDisableEnableLabel.Location = new System.Drawing.Point(38, 62);
+            this.spDisableEnableLabel.Name = "spDisableEnableLabel";
+            this.spDisableEnableLabel.Size = new System.Drawing.Size(222, 13);
+            this.spDisableEnableLabel.TabIndex = 17;
+            this.spDisableEnableLabel.Text = "Disable devices and re-enable on game close";
+            this.spDisableEnableLabel.Click += new System.EventHandler(this.spDisableEnableLabel_Click);
+            // 
+            // spFakeMultiplayerLabel
+            // 
+            this.spFakeMultiplayerLabel.AutoSize = true;
+            this.spFakeMultiplayerLabel.Location = new System.Drawing.Point(38, 86);
+            this.spFakeMultiplayerLabel.Name = "spFakeMultiplayerLabel";
+            this.spFakeMultiplayerLabel.Size = new System.Drawing.Size(219, 13);
+            this.spFakeMultiplayerLabel.TabIndex = 17;
+            this.spFakeMultiplayerLabel.Text = "Prevent game from recognizing more devices";
+            this.spFakeMultiplayerLabel.Click += new System.EventHandler(this.spFakeMultiplayerLabel_Click);
+            // 
+            // aboutButton
+            // 
+            this.aboutButton.BackColor = System.Drawing.Color.DimGray;
+            this.aboutButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.aboutButton.Location = new System.Drawing.Point(178, 442);
+            this.aboutButton.Name = "aboutButton";
+            this.aboutButton.Size = new System.Drawing.Size(67, 24);
+            this.aboutButton.TabIndex = 21;
+            this.aboutButton.Text = "About";
+            this.aboutButton.UseVisualStyleBackColor = false;
+            this.aboutButton.Click += new System.EventHandler(this.aboutButton_Click);
+            // 
+            // singlePlayerGroupBox
+            // 
+            this.singlePlayerGroupBox.Controls.Add(this.label14);
+            this.singlePlayerGroupBox.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.singlePlayerGroupBox.Location = new System.Drawing.Point(12, 295);
+            this.singlePlayerGroupBox.Name = "singlePlayerGroupBox";
+            this.singlePlayerGroupBox.Size = new System.Drawing.Size(355, 128);
+            this.singlePlayerGroupBox.TabIndex = 23;
+            this.singlePlayerGroupBox.TabStop = false;
+            this.singlePlayerGroupBox.Text = "Single Player Mode";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(63, 50);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(231, 26);
+            this.label14.TabIndex = 18;
+            this.label14.Text = "Since you are not using the onboard soundcard\r\nthere should be no device conflict" +
+    "s.";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(184, 471);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(53, 12);
+            this.label11.TabIndex = 24;
+            this.label11.Text = "NCL v2.0.1";
             // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(378, 464);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.ClientSize = new System.Drawing.Size(378, 490);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.aboutButton);
+            this.Controls.Add(this.launchGameButton);
             this.Controls.Add(this.inputDevButton);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.player2GroupBox);
             this.Controls.Add(this.player1GroupBox);
             this.Controls.Add(this.cancelButton);
-            this.Controls.Add(this.okButton);
+            this.Controls.Add(this.saveButton);
+            this.Controls.Add(this.spOnBoardGroupBox);
+            this.Controls.Add(this.player2GroupBox);
+            this.Controls.Add(this.singlePlayerGroupBox);
+            this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Settings";
@@ -401,47 +622,69 @@
             this.Load += new System.EventHandler(this.Settings_Load);
             this.player1GroupBox.ResumeLayout(false);
             this.player1GroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.refreshPictureBox1)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.player2GroupBox.ResumeLayout(false);
             this.player2GroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.refreshPictureBox2)).EndInit();
+            this.spOnBoardGroupBox.ResumeLayout(false);
+            this.spOnBoardGroupBox.PerformLayout();
+            this.singlePlayerGroupBox.ResumeLayout(false);
+            this.singlePlayerGroupBox.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox pathTextBox;
-        private System.Windows.Forms.CheckBox steamCheckBox;
-        private System.Windows.Forms.Button browseButton;
-        private System.Windows.Forms.ComboBox p1DeviceCombo;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox p1vidTextBox;
-        private System.Windows.Forms.TextBox p1pidTexBox;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.CheckBox p1manualCheckBox;
-        private System.Windows.Forms.Button okButton;
-        private System.Windows.Forms.Button cancelButton;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox offcetVidTextBox;
-        private System.Windows.Forms.TextBox offcetPidTextBox;
-        private System.Windows.Forms.GroupBox player1GroupBox;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.GroupBox player2GroupBox;
-        private System.Windows.Forms.CheckBox p2manualCheckBox;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.ComboBox p2DeviceCombo;
-        private System.Windows.Forms.TextBox p2pidTexBox;
-        private System.Windows.Forms.TextBox p2vidTextBox;
-        private System.Windows.Forms.CheckBox multiplayerCheckBox;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button inputDevButton;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.CheckBox manualOffcetsCheckbox;
+        private Label label1;
+        private TextBox pathTextBox;
+        private CheckBox steamCheckBox;
+        private Button browseButton;
+        private ComboBox p1DeviceCombo;
+        private Label label2;
+        private TextBox p1vidTextBox;
+        private TextBox p1pidTexBox;
+        private Label label3;
+        private Label label4;
+        private CheckBox p1manualCheckBox;
+        private Button saveButton;
+        private Button cancelButton;
+        private Label label5;
+        private TextBox offsetVidTextBox;
+        private TextBox offsetPidTextBox;
+        private GroupBox player1GroupBox;
+        private OpenFileDialog openFileDialog1;
+        private GroupBox groupBox2;
+        private GroupBox player2GroupBox;
+        private CheckBox p2manualCheckBox;
+        private Label label7;
+        private Label label8;
+        private Label label9;
+        private ComboBox p2DeviceCombo;
+        private TextBox p2pidTexBox;
+        private TextBox p2vidTextBox;
+        private CheckBox multiplayerCheckBox;
+        private Label label6;
+        private Button inputDevButton;
+        private Label label12;
+        private CheckBox manualOffsetsCheckbox;
+        private Button launchGameButton;
+        private GroupBox spOnBoardGroupBox;
+        private PictureBox refreshPictureBox1;
+        private PictureBox refreshPictureBox2;
+        private Button aboutButton;
+        private Button infoButton1;
+        private Label spFakeMultiplayerLabel;
+        private RadioButton spDisableEnableRadioButton;
+        private RadioButton spFakeMultiplayerRadioButton;
+        private Button infoButton2;
+        private Label label10;
+        private Label spDisableEnableLabel;
+        private GroupBox singlePlayerGroupBox;
+        private Label label14;
+        private Label label11;
     }
 }

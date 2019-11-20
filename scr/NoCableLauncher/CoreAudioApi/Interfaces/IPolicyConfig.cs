@@ -38,9 +38,13 @@ namespace NoCableLauncher.CoreAudioApi.Interfaces
         int SetPropertyValue(string pszDeviceName, bool bFxStore, IntPtr key, IntPtr pv);
 
         [PreserveSig]
-        int SetDefaultEndpoint(string pszDeviceName, ERole role);
+        int SetDefaultEndpoint(
+    [In] [MarshalAs(UnmanagedType.LPWStr)] string pszDeviceName,
+    [In] [MarshalAs(UnmanagedType.U4)] ERole role);
 
         [PreserveSig]
-        int SetEndpointVisibility(string pszDeviceName, bool bVisible);
+        int SetEndpointVisibility(
+            [In] [MarshalAs(UnmanagedType.LPWStr)] string pszDeviceName,
+            [In] [MarshalAs(UnmanagedType.Bool)] bool bVisible);
     }
 }

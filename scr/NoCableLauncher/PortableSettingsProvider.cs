@@ -1,15 +1,16 @@
 ﻿using System;
-using System.Configuration;
-using System.Xml;
 using System.Collections.Specialized;
-using System.Windows.Forms;
+using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
+using System.Xml;
 
 namespace NoCableLauncher
 {
     public sealed class PortableSettingsProvider : SettingsProvider, IApplicationSettingsProvider
     {
+        public const string SettingsFileName = "NCL_Settings.xml";
         private const string _rootNodeName = "settings";
         private const string _className = "PortableSettingsProvider";
         private XmlDocument _xmlDocument;
@@ -18,36 +19,32 @@ namespace NoCableLauncher
         {
             get
             {
-                return Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "Settings.xml");
+                return Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), SettingsFileName);
             }
         }
 
-        private XmlNode _rootNode
-        {
-            get { return _rootDocument.SelectSingleNode(_rootNodeName); }
-        }
+        private XmlNode _rootNode => _rootDocument.SelectSingleNode(_rootNodeName);
 
         private XmlDocument _rootDocument
         {
             get
             {
-                if (_xmlDocument == null)
+                if (_xmlDocument != null) return _xmlDocument;
+
+                try
                 {
-                    try
-                    {
-                        _xmlDocument = new XmlDocument();
-                        _xmlDocument.Load(_filePath);
-                    }
-                    catch (Exception)
-                    {
-
-                    }
-
-                    if (_xmlDocument.SelectSingleNode(_rootNodeName) != null)
-                        return _xmlDocument;
-
-                    _xmlDocument = GetBlankXmlDocument();
+                    _xmlDocument = new XmlDocument();
+                    _xmlDocument.Load(_filePath);
                 }
+                catch (Exception)
+                {
+
+                }
+
+                if (_xmlDocument.SelectSingleNode(_rootNodeName) != null)
+                    return _xmlDocument;
+
+                _xmlDocument = GetBlankXmlDocument();
 
                 return _xmlDocument;
             }
@@ -55,14 +52,11 @@ namespace NoCableLauncher
 
         public override string ApplicationName
         {
-            get { return Path.GetFileNameWithoutExtension(Application.ExecutablePath); }
+            get => Path.GetFileNameWithoutExtension(Application.ExecutablePath);
             set { }
         }
 
-        public override string Name
-        {
-            get { return _className; }
-        }
+        public override string Name => _className;
 
         public override void Initialize(string name, NameValueCollection config)
         {
@@ -109,7 +103,7 @@ namespace NoCableLauncher
         private void SetValue(SettingsPropertyValue propertyValue)
         {
 
-            XmlNode settingNode = _rootNode.SelectSingleNode(string.Format("setting[@name='{0}']", propertyValue.Name));
+            XmlNode settingNode = _rootNode.SelectSingleNode($"setting[@name='{propertyValue.Name}']");
 
             if (settingNode != null)
             {
@@ -126,7 +120,7 @@ namespace NoCableLauncher
                 XmlAttribute nameAttribute = _rootDocument.CreateAttribute("name");
                 nameAttribute.Value = propertyValue.Name;
 
-                settingNode.Attributes.Append(nameAttribute);
+                settingNode.Attributes?.Append(nameAttribute);
 
                 settingNode.InnerText = propertyValue.SerializedValue.ToString();
 
@@ -136,7 +130,7 @@ namespace NoCableLauncher
 
         private string GetValue(SettingsProperty property)
         {
-            XmlNode settingNode = _rootNode.SelectSingleNode(string.Format("setting[@name='{0}']", property.Name));
+            XmlNode settingNode = _rootNode.SelectSingleNode($"setting[@name='{property.Name}']");
 
             if (settingNode == null)
                 return property.DefaultValue != null ? property.DefaultValue.ToString() : string.Empty;
@@ -148,11 +142,10 @@ namespace NoCableLauncher
         {
             XmlNode settingsNode = _rootNode.SelectSingleNode(name);
 
-            if (settingsNode == null)
-            {
-                settingsNode = _rootDocument.CreateElement(name);
-                _rootNode.AppendChild(settingsNode);
-            }
+            if (settingsNode != null) return settingsNode;
+
+            settingsNode = _rootDocument.CreateElement(name);
+            _rootNode.AppendChild(settingsNode);
 
             return settingsNode;
         }

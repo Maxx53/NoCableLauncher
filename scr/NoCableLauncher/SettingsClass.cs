@@ -1,13 +1,18 @@
-﻿namespace NoCableLauncher
+﻿using System.CodeDom.Compiler;
+using System.Configuration;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+
+namespace NoCableLauncher
 {
     class SettingsClass
     {
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "10.0.0.0")]
-        internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
+        [CompilerGenerated]
+        [GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "10.0.0.0")]
+        internal sealed class Settings : ApplicationSettingsBase
         {
 
-            private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
+            private static Settings defaultInstance = ((Settings)(Synchronized(new Settings())));
 
             public static Settings Default
             {
@@ -17,10 +22,10 @@
                 }
             }
 
-            [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
-            [global::System.Configuration.UserScopedSettingAttribute()]
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.Configuration.DefaultSettingValueAttribute(Program.steamName)]
+            [SettingsProvider(typeof(PortableSettingsProvider))]
+            [UserScopedSetting]
+            [DebuggerNonUserCode]
+            [DefaultSettingValue(Program.steamName)]
             public string gamePath
             {
                 get
@@ -34,42 +39,42 @@
             }
 
 
-            [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
-            [global::System.Configuration.UserScopedSettingAttribute()]
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.Configuration.DefaultSettingValueAttribute("012DE6EC")]
-            public string offcetVID
+            [SettingsProvider(typeof(PortableSettingsProvider))]
+            [UserScopedSetting]
+            [DebuggerNonUserCode]
+            [DefaultSettingValue("012DE6EC")]
+            public string offsetVID
             {
                 get
                 {
-                    return ((string)(this["offcetVID"]));
+                    return ((string)(this["offsetVID"]));
                 }
                 set
                 {
-                    this["offcetVID"] = value;
+                    this["offsetVID"] = value;
                 }
             }
 
-            [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
-            [global::System.Configuration.UserScopedSettingAttribute()]
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.Configuration.DefaultSettingValueAttribute("012DE6F4")]
-            public string offcetPID
+            [SettingsProvider(typeof(PortableSettingsProvider))]
+            [UserScopedSetting]
+            [DebuggerNonUserCode]
+            [DefaultSettingValue("012DE6F4")]
+            public string offsetPID
             {
                 get
                 {
-                    return ((string)(this["offcetPID"]));
+                    return ((string)(this["offsetPID"]));
                 }
                 set
                 {
-                    this["offcetPID"] = value;
+                    this["offsetPID"] = value;
                 }
             }
 
-            [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
-            [global::System.Configuration.UserScopedSettingAttribute()]
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.Configuration.DefaultSettingValueAttribute("0000")]
+            [SettingsProvider(typeof(PortableSettingsProvider))]
+            [UserScopedSetting]
+            [DebuggerNonUserCode]
+            [DefaultSettingValue("0000")]
             public string PID
             {
                 get
@@ -82,10 +87,10 @@
                 }
             }
 
-            [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
-            [global::System.Configuration.UserScopedSettingAttribute()]
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.Configuration.DefaultSettingValueAttribute("0000")]
+            [SettingsProvider(typeof(PortableSettingsProvider))]
+            [UserScopedSetting]
+            [DebuggerNonUserCode]
+            [DefaultSettingValue("0000")]
             public string VID
             {
                 get
@@ -98,10 +103,10 @@
                 }
             }
 
-            [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
-            [global::System.Configuration.UserScopedSettingAttribute()]
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.Configuration.DefaultSettingValueAttribute("0000")]
+            [SettingsProvider(typeof(PortableSettingsProvider))]
+            [UserScopedSetting]
+            [DebuggerNonUserCode]
+            [DefaultSettingValue("0000")]
             public string PID2
             {
                 get
@@ -114,10 +119,10 @@
                 }
             }
 
-            [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
-            [global::System.Configuration.UserScopedSettingAttribute()]
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.Configuration.DefaultSettingValueAttribute("0000")]
+            [SettingsProvider(typeof(PortableSettingsProvider))]
+            [UserScopedSetting]
+            [DebuggerNonUserCode]
+            [DefaultSettingValue("0000")]
             public string VID2
             {
                 get
@@ -130,10 +135,10 @@
                 }
             }
 
-            [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
-            [global::System.Configuration.UserScopedSettingAttribute()]
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.Configuration.DefaultSettingValueAttribute("")]
+            [SettingsProvider(typeof(PortableSettingsProvider))]
+            [UserScopedSetting]
+            [DebuggerNonUserCode]
+            [DefaultSettingValue("")]
             public string GUID1
             {
                 get
@@ -146,10 +151,10 @@
                 }
             }
 
-            [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
-            [global::System.Configuration.UserScopedSettingAttribute()]
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.Configuration.DefaultSettingValueAttribute("")]
+            [SettingsProvider(typeof(PortableSettingsProvider))]
+            [UserScopedSetting]
+            [DebuggerNonUserCode]
+            [DefaultSettingValue("")]
             public string GUID2
             {
                 get
@@ -163,10 +168,10 @@
             }
 
 
-            [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
-            [global::System.Configuration.UserScopedSettingAttribute()]
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.Configuration.DefaultSettingValueAttribute("True")]
+            [SettingsProvider(typeof(PortableSettingsProvider))]
+            [UserScopedSetting]
+            [DebuggerNonUserCode]
+            [DefaultSettingValue("True")]
             public bool isSteam
             {
                 get
@@ -179,10 +184,10 @@
                 }
             }
 
-            [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
-            [global::System.Configuration.UserScopedSettingAttribute()]
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.Configuration.DefaultSettingValueAttribute("False")]
+            [SettingsProvider(typeof(PortableSettingsProvider))]
+            [UserScopedSetting]
+            [DebuggerNonUserCode]
+            [DefaultSettingValue("False")]
             public bool Multiplayer
             {
                 get
@@ -195,27 +200,27 @@
                 }
             }
 
-            [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
-            [global::System.Configuration.UserScopedSettingAttribute()]
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.Configuration.DefaultSettingValueAttribute("False")]
-            public bool manualOffcets
+            [SettingsProvider(typeof(PortableSettingsProvider))]
+            [UserScopedSetting]
+            [DebuggerNonUserCode]
+            [DefaultSettingValue("False")]
+            public bool manualOffsets
             {
                 get
                 {
-                    return ((bool)(this["manualOffcets"]));
+                    return ((bool)(this["manualOffsets"]));
                 }
                 set
                 {
-                    this["manualOffcets"] = value;
+                    this["manualOffsets"] = value;
                 }
             }
 
 
-            [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
-            [global::System.Configuration.UserScopedSettingAttribute()]
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.Configuration.DefaultSettingValueAttribute("False")]
+            [SettingsProvider(typeof(PortableSettingsProvider))]
+            [UserScopedSetting]
+            [DebuggerNonUserCode]
+            [DefaultSettingValue("False")]
             public bool manualDev1
             {
                 get
@@ -228,10 +233,10 @@
                 }
             }
 
-            [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider))]
-            [global::System.Configuration.UserScopedSettingAttribute()]
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.Configuration.DefaultSettingValueAttribute("False")]
+            [SettingsProvider(typeof(PortableSettingsProvider))]
+            [UserScopedSetting]
+            [DebuggerNonUserCode]
+            [DefaultSettingValue("False")]
             public bool manualDev2
             {
                 get
@@ -243,6 +248,23 @@
                     this["manualDev2"] = value;
                 }
             }
+
+            [SettingsProvider(typeof(PortableSettingsProvider))]
+            [UserScopedSetting]
+            [DebuggerNonUserCode]
+            [DefaultSettingValue("0")]
+            public int SingleplayerMode
+            {
+                get
+                {
+                    return ((int)(this["SingleplayerMode"]));
+                }
+                set
+                {
+                    this["SingleplayerMode"] = value;
+                }
+            }
+
         }
     }
 }
