@@ -1,7 +1,7 @@
 # NoCableLauncher
 Rocksmith 2014 Remastered Launcher for playing without original RealTone cable (nocable fix).
 
-Created by [Maxx54](https://github.com/Maxx53)
+Created by [Maxx53](https://github.com/Maxx53)
 Improved by [Mywk](https://github.com/Mywk)
 
 ### Changelog
